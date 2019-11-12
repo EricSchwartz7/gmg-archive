@@ -1,0 +1,27 @@
+.Parent ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.Parent li {
+    display: inline-block;
+    margin: 20px;
+}
+
+.Parent a {
+    text-decoration: none;
+    color: orange;
+}
+
+.Parent a:hover,
+.Parent a:active,
+.Parent a.active {
+    color: white;
+}
+
+.Parent nav {
+    background-color: #003300;
+}
