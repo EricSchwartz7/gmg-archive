@@ -61,7 +61,7 @@ class Show extends Component {
                 </div>
             )
         } else if ( this.state.loadedShow ) {
-            let date = new Date(this.state.loadedShow.date).toLocaleDateString("en-US");
+            let date = new Date(this.state.loadedShow.date + " EST").toLocaleDateString();
             let firstSet = this.formatSetlist(this.state.loadedShow.first_set);
             let secondSet = this.formatSetlist(this.state.loadedShow.second_set);
             let encore = this.formatSetlist(this.state.loadedShow.encore);

@@ -29,7 +29,7 @@ class NewShow extends Component {
             if ( !this.state.loadedShow || (this.state.loadedShow && this.state.loadedShow.id !== +this.props.match.params.id) ) {
                 axios.get( '/shows/' + this.props.match.params.id )
                     .then( response => {
-                        response.data.date = new Date(response.data.date);
+                        // response.data.date = new Date(response.data.date);
                         console.log(response);
                         this.setState( { showData: response.data } );
                     });
@@ -92,11 +92,12 @@ class NewShow extends Component {
                     <h1>Add a Show</h1>
                     <Form.Field>
                         <label>Date</label>
-                        <SemanticDatepicker 
+                        {/* <SemanticDatepicker 
                             // value={date}
                             // selectedDate={date}
                             onDateChange={(dateValue) => this.handleChange("date", dateValue)} 
-                        />
+                        /> */}
+                        <input type="date" className="ui calendar" value={this.state.showData.date} onChange={(event) => this.handleChange("date", event.target.value)} />
                     </Form.Field>
                     <Form.Field>
                         <label>Venue</label>
