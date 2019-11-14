@@ -1,0 +1,58 @@
+.NewShow {
+    width: 80%;
+    margin: 20px auto;
+    padding: 15px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    // text-align: center;
+
+    h1 {
+        text-align: center;
+    }
+    
+    label {
+        display: block;
+        margin: 10px;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .accordion {
+        .title:not(.ui) {
+            text-align: left;
+            // padding: 0px;
+        }
+    }
+    
+    input,
+    textarea,
+    select {
+        display: block;
+        width: 80%;
+        box-sizing: border-box;
+        border: 1px solid black;
+        outline: none;
+        font: inherit;
+        margin: auto;
+    }
+
+    .submit-button {
+        text-align: center;
+    }
+    
+    button {
+        margin: 5px 0;
+        padding: 10px;
+        font: inherit;
+        border: 1px solid #fa923f;
+        background-color: transparent;
+        color: #fa923f;
+        cursor: pointer;
+    }
+    
+    button:hover,
+    button:active {
+        color: white;
+        background-color: #fa923f;
+    }
+}

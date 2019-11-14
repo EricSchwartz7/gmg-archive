@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Form, Input, TextArea } from 'semantic-ui-react'
+import { Button, Form, Input, TextArea, Accordion } from 'semantic-ui-react'
 import SemanticDatepicker from 'react-semantic-ui-datepickers';
 
-import './NewShow.css';
+import './NewShow.scss';
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
 
 class NewShow extends Component {
@@ -17,7 +17,8 @@ class NewShow extends Component {
             encore: '',
         },
         routeToShow: false,
-        showID: 0
+        showID: 0,
+        loading: true
     }
 
     componentWillMount() {
@@ -31,7 +32,10 @@ class NewShow extends Component {
                     .then( response => {
                         // response.data.date = new Date(response.data.date);
                         console.log(response);
-                        this.setState( { showData: response.data } );
+                        this.setState( { 
+                            showData: response.data,
+                            loading: false
+                        } );
                     });
             }
         }
@@ -84,12 +88,31 @@ class NewShow extends Component {
         }
 
         let date = new Date(this.state.showData.date);
-        // this.handleChange("date", date);
+
+        const panels = [
+            {
+                key: "secondSet",
+                title: "Second Set",
+                content: {
+                    as: Form.TextArea,
+                    value: this.state.showData.second_set
+                }
+            },
+            {
+                key: "encore",
+                title: "Encore",
+                content: {
+                    as: Form.TextArea,
+                    rows: 1,
+                    value: this.state.showData.encore
+                }
+            }
+        ]
 
         return (
             <div className="NewShow">
                 <Form>
-                    <h1>Add a Show</h1>
+                    {this.props.match.params.id ? <h1>Update Show</h1> : <h1>Add a Show</h1>}
                     <Form.Field>
                         <label>Date</label>
                         {/* <SemanticDatepicker 
@@ -107,18 +130,25 @@ class NewShow extends Component {
                         <label>First Set</label>
                         <TextArea value={this.state.showData.first_set} onChange={(event) => this.handleChange("first_set", event.target.value)} />
                     </Form.Field>
-                    <Form.Field>
-                        <label>Second Set</label>
-                        <TextArea value={this.state.showData.second_set} onChange={(event) => this.handleChange("second_set", event.target.value)} />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Encore</label>
-                        <TextArea value={this.state.showData.encore} rows={1} onChange={(event) => this.handleChange("encore", event.target.value)} />
-                    </Form.Field>
-                    {this.props.match.params.id ? 
-                        <Button type="Submit" onClick={this.updateHandler}>Update Show</Button> :
-                        <Button type="Submit" onClick={this.postDataHandler}>Add Show</Button>
+                    {this.state.loading ? 
+                        null :
+                        <Accordion 
+                            as={Form.Field} 
+                            panels={panels} 
+                            defaultActiveIndex={[
+                                this.state.showData.second_set ? 0 : -1,
+                                this.state.showData.encore ? 1 : -1
+                            ]}
+                            exclusive={false}
+                            onChange={(event) => this.handleChange("second_set", event.target.value)}
+                        />
                     }
+                    <div className="submit-button">
+                        {this.props.match.params.id ? 
+                            <Button type="Submit" onClick={this.updateHandler}>Update Show</Button> :
+                            <Button type="Submit" onClick={this.postDataHandler}>Add Show</Button>
+                        }
+                    </div>
                 </Form>
             </div>
         );
