@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button, Label, Modal, Input, Form } from 'semantic-ui-react'
+import { Button, Label, Modal, Input, Form, Card, Embed } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom';
 import DeleteButton from "components/DeleteButton/DeleteButton";
 import FormatHelper from "FormatHelper"
@@ -10,40 +10,40 @@ import './Show.scss';
 
 class Show extends Component {
     state = {
+        loadedShow: {},
+        loadedVideos: false,
+        videos: []
     }
 
-    // componentDidMount () {
-    //     console.log(this.props);
-    //     this.loadData();
-    // }
-
-    // componentDidUpdate() {
-    //     this.loadData();
-    // }
-
-    componentWillMount() {
-        this.loadData();
+    componentDidMount() {
+        this.loadShowData();
+        this.loadVideos();
     }
 
-    loadData () {
+    loadShowData () {
         if ( this.props.match.params.id ) {
             if ( !this.state.loadedShow || (this.state.loadedShow && this.state.loadedShow.id !== +this.props.match.params.id) ) {
                 axios.get( '/shows/' + this.props.match.params.id )
                     .then( response => {
-                        // console.log(response);
-                        this.setState( { loadedShow: response.data } );
+                        this.setState({loadedShow: response.data});
                     }).catch( () => {
-                        this.setState( {loadedShow: "notfound"} );
+                        this.setState({loadedShow: "notfound"});
                     })
             }
         }
     }
 
-    // formatSetlist (setlist) {
-    //     if (setlist) {
-    //         return setlist.replace(/[\n\r]/g, ', ');
-    //     }
-    // }
+    loadVideos() {
+        if ( this.props.match.params.id ) {
+            axios.get("/get_videos/" + this.props.match.params.id)
+                .then( (response) => {
+                    this.setState({
+                        videos: response.data,
+                        loadedVideos: true
+                    });
+                });
+        }
+    }
 
     deleteShow = () => {
         axios.delete("/shows/" + this.props.match.params.id)
@@ -53,7 +53,11 @@ class Show extends Component {
 
     handleSubmit(videoData) {
         videoData.show_id = this.props.match.params.id;
-        axios.post('/videos', videoData);
+        axios.post('/videos', videoData).then( (response) => 
+            this.setState({
+                videos: this.state.videos.concat(response.data)
+            })
+        );
     }
 
     render () {
@@ -67,11 +71,21 @@ class Show extends Component {
                     <h3>404 Not Found</h3>
                 </div>
             )
-        } else if ( this.state.loadedShow ) {
+        } else if (this.state.loadedShow && this.state.loadedVideos) {
             let date = new Date(this.state.loadedShow.date + " EST").toLocaleDateString();
             let firstSet = FormatHelper.formatSetlist(this.state.loadedShow.first_set);
             let secondSet = FormatHelper.formatSetlist(this.state.loadedShow.second_set);
             let encore = FormatHelper.formatSetlist(this.state.loadedShow.encore);
+
+            const YOUTUBE_CONSTANT = "watch?v=";
+            const videos = this.state.videos.map( (video) => {
+                let sliceNumber = video.url.indexOf(YOUTUBE_CONSTANT) + YOUTUBE_CONSTANT.length
+                let id = video.url.slice(sliceNumber);
+                return {
+                    id: id,
+                    title: video.title
+                }
+            });
 
             show = (
                 <div className="Show">
@@ -84,12 +98,26 @@ class Show extends Component {
                         <Link to={'/upload/' + this.props.match.params.id}>        
                             <Button>Edit</Button>
                         </Link>
-                        {/* <Link to={'/upload/'}>        
-                            <Button>Add a photo or video</Button>
-                        </Link> */}
                         <AddMediaDialog handleSubmit={this.handleSubmit.bind(this)}/>
-
                         <DeleteButton history={this.props.history} id={this.props.match.params.id} />
+                    </div>
+                    <div className="videos">
+                        {videos.map( (video, i) => 
+                            <div key={i}>
+                                <h3>{video.title}</h3>
+                                <Embed 
+                                    id={video.id}
+                                    placeholder="https://f4.bcbits.com/img/a3887907904_16.jpg"
+                                    source="youtube"
+                                    iframe={{
+                                        allowFullScreen: true,
+                                        style: {
+                                          padding: 10,
+                                        },
+                                      }}
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
             );

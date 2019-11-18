@@ -13,7 +13,6 @@ class AddMediaDialog extends Component {
     handleSubmit = () => {
         this.props.handleSubmit(this.state.video);
         this.close();
-        // var x = arguments;
     }
 
     show() {
@@ -39,7 +38,7 @@ class AddMediaDialog extends Component {
             <span>
                 <Button 
                     onClick={this.show.bind(this)} 
-                >Add a photo or video</Button>
+                >Add a video from YouTube</Button>
                 <Modal 
                     open={this.state.open} 
                 >
@@ -47,12 +46,10 @@ class AddMediaDialog extends Component {
                     <Modal.Content>
                         <Form>
                             <Form.Field>
-                                {/* <Label>Title</Label> */}
                                 <Input placeholder="Title" onChange={(event) => this.handleChange("title", event.target.value)}/>
                             </Form.Field>
                             <Form.Field>
-                                {/* <Label>URL</Label> */}
-                                <Input placeholder="ex. youtube.com/video" onChange={(event) => this.handleChange("url", event.target.value)}/>
+                                <Input placeholder="ex. https://www.youtube.com/watch?v=xW30CHsezKU" onChange={(event) => this.handleChange("url", event.target.value)}/>
                             </Form.Field>
                             <Button color="green" onClick={this.handleSubmit.bind(this)}>Submit</Button>
                             <Button onClick={this.close.bind(this)}>Cancel</Button>

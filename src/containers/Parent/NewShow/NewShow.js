@@ -117,11 +117,6 @@ class NewShow extends Component {
                     {this.props.match.params.id ? <h1>Update Show</h1> : <h1>Add a Show</h1>}
                     <Form.Field>
                         <label>Date</label>
-                        {/* <SemanticDatepicker 
-                            // value={date}
-                            // selectedDate={date}
-                            onDateChange={(dateValue) => this.handleChange("date", dateValue)} 
-                        /> */}
                         <input type="date" className="ui calendar" value={this.state.showData.date} onChange={(event) => this.handleChange("date", event.target.value)} />
                     </Form.Field>
                     <Form.Field>

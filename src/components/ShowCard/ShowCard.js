@@ -30,7 +30,7 @@ const ShowCard = function(props) {
                         <Card.Description>
                             <label>Encore: </label>{FormatHelper.formatSetlist(props.show.encore)}
                         </Card.Description> : null}
-                    </div>
+                </div>
             </Card.Content>
         </Card>
     )

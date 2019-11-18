@@ -38,8 +38,6 @@ class Parent extends Component {
                         </ul>
                     </nav>
                 </header>
-                {/* <Route path="/" exact render={() => <h1>Home</h1>} />
-                <Route path="/" render={() => <h1>Home 2</h1>} /> */}
                 <Switch>
                     <Route path="/about" component={About} />
                     <Route path="/shows" component={ShowsList} />
