@@ -23,17 +23,19 @@ class DeleteButton extends Component {
 
     render() {
         return (
-            <Button
-                className="Delete"
-                onClick={this.show} 
-            >
-                    Delete
-                    <Confirm
-                        open={this.state.open}
-                        content="Are you sure you want to delete this show and all of its data?"
-                        onConfirm={this.handleDelete}
-                    />
-            </Button>
+            <span>
+                <Button
+                    color="red"
+                    onClick={this.show} 
+                >
+                        Delete
+                        <Confirm
+                            open={this.state.open}
+                            content="Are you sure you want to delete this show and all of its data?"
+                            onConfirm={this.handleDelete}
+                        />
+                </Button>
+            </span>
         );
     }
 }

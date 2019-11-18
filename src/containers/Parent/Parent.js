@@ -34,7 +34,7 @@ class Parent extends Component {
                                 pathname: '/upload',
                                 hash: '#submit',
                                 search: '?quick-submit=true'
-                            }}>Upload Media</NavLink></li>
+                            }}>Add a Show</NavLink></li>
                         </ul>
                     </nav>
                 </header>

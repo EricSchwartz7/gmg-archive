@@ -1,0 +1,32 @@
+.ShowCard {
+    margin: 20px;
+
+    .content {
+        background-color: #003300 !important;
+
+        .meta {
+            color: lightgrey !important;
+            font-size: 1.2em !important;
+            margin-top: 3px;
+        }
+    }
+
+    .setlist-section {
+        color: white;
+
+        .description {
+            margin-top: 7px;
+        }
+
+        label {
+            color: lightgrey;
+            font-size: .8em;
+        }
+    }
+
+    .ui.label {
+        color: #003300;
+        background-color: orange;
+        font-size: .8em;
+    }
+}

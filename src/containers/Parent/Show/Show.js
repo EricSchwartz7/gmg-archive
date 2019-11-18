@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button } from 'semantic-ui-react'
+import { Button, Label, Modal, Input, Form } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom';
 import DeleteButton from "components/DeleteButton/DeleteButton";
+import FormatHelper from "FormatHelper"
+import AddMediaDialog from "components/AddMediaDialog/AddMediaDialog"
 
 import './Show.scss';
 
@@ -37,16 +39,21 @@ class Show extends Component {
         }
     }
 
-    formatSetlist (setlist) {
-        if (setlist) {
-            return setlist.replace(/[\n\r]/g, ', ');
-        }
-    }
+    // formatSetlist (setlist) {
+    //     if (setlist) {
+    //         return setlist.replace(/[\n\r]/g, ', ');
+    //     }
+    // }
 
     deleteShow = () => {
         axios.delete("/shows/" + this.props.match.params.id)
         let history = useHistory();
         history.push("/shows");
+    }
+
+    handleSubmit(videoData) {
+        videoData.show_id = this.props.match.params.id;
+        axios.post('/videos', videoData);
     }
 
     render () {
@@ -62,9 +69,9 @@ class Show extends Component {
             )
         } else if ( this.state.loadedShow ) {
             let date = new Date(this.state.loadedShow.date + " EST").toLocaleDateString();
-            let firstSet = this.formatSetlist(this.state.loadedShow.first_set);
-            let secondSet = this.formatSetlist(this.state.loadedShow.second_set);
-            let encore = this.formatSetlist(this.state.loadedShow.encore);
+            let firstSet = FormatHelper.formatSetlist(this.state.loadedShow.first_set);
+            let secondSet = FormatHelper.formatSetlist(this.state.loadedShow.second_set);
+            let encore = FormatHelper.formatSetlist(this.state.loadedShow.encore);
 
             show = (
                 <div className="Show">
@@ -73,13 +80,15 @@ class Show extends Component {
                     <p><span>SET 1: </span>{firstSet}</p>
                     {secondSet ? (<p><span>SET 2: </span>{secondSet}</p>) : null}
                     {encore ? (<p><span>ENCORE: </span>{encore}</p>) : null}
-                    <div className="Edit">
+                    <div className="button-group">
                         <Link to={'/upload/' + this.props.match.params.id}>        
                             <Button>Edit</Button>
                         </Link>
-                        <Link to={'/upload/'}>        
-                            <Button>Upload a photo from this show</Button>
-                        </Link>
+                        {/* <Link to={'/upload/'}>        
+                            <Button>Add a photo or video</Button>
+                        </Link> */}
+                        <AddMediaDialog handleSubmit={this.handleSubmit.bind(this)}/>
+
                         <DeleteButton history={this.props.history} id={this.props.match.params.id} />
                     </div>
                 </div>

@@ -13,7 +13,7 @@
 
 .Parent a {
     text-decoration: none;
-    color: orange;
+    color: #003300;
 }
 
 .Parent a:hover,
@@ -23,5 +23,5 @@
 }
 
 .Parent nav {
-    background-color: #003300;
+    background-color: orange;
 }

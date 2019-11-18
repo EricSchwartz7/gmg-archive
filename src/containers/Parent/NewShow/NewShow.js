@@ -21,7 +21,7 @@ class NewShow extends Component {
         loading: true
     }
 
-    componentWillMount() {
+    componentDidMount () {
         this.loadData();
     }
 
@@ -32,18 +32,19 @@ class NewShow extends Component {
                     .then( response => {
                         // response.data.date = new Date(response.data.date);
                         console.log(response);
+                        this.setState({
+                            showData: response.data
+                        });
+                    })
+                    .finally( () => {
                         this.setState( { 
-                            showData: response.data,
                             loading: false
-                        } );
+                        });
                     });
             }
         }
     }
 
-    componentDidMount () {
-        // console.log(this.props);
-    }
 
     postDataHandler = () => {
         axios.post('/shows', this.state.showData)
@@ -79,7 +80,6 @@ class NewShow extends Component {
         this.setState({
             showData: showData
         });
-        console.log(this.state);
     }
 
     render () {
@@ -95,7 +95,8 @@ class NewShow extends Component {
                 title: "Second Set",
                 content: {
                     as: Form.TextArea,
-                    value: this.state.showData.second_set
+                    value: this.state.showData.second_set,
+                    onChange: (event) => this.handleChange("second_set", event.target.value)
                 }
             },
             {
@@ -104,7 +105,8 @@ class NewShow extends Component {
                 content: {
                     as: Form.TextArea,
                     rows: 1,
-                    value: this.state.showData.encore
+                    value: this.state.showData.encore,
+                    onChange: (event) => this.handleChange("encore", event.target.value)
                 }
             }
         ]
@@ -130,7 +132,7 @@ class NewShow extends Component {
                         <label>First Set</label>
                         <TextArea value={this.state.showData.first_set} onChange={(event) => this.handleChange("first_set", event.target.value)} />
                     </Form.Field>
-                    {this.state.loading ? 
+                    {this.props.match.params.id && this.state.loading ? 
                         null :
                         <Accordion 
                             as={Form.Field} 
@@ -140,7 +142,6 @@ class NewShow extends Component {
                                 this.state.showData.encore ? 1 : -1
                             ]}
                             exclusive={false}
-                            onChange={(event) => this.handleChange("second_set", event.target.value)}
                         />
                     }
                     <div className="submit-button">
