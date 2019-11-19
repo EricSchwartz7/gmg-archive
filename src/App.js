@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 
-import Parent from './containers/Parent/Parent';
+import Parent from './pages/Parent/Parent';
 
 class App extends Component {
   render () {

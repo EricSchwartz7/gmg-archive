@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Button, Form, Input, TextArea, Accordion } from 'semantic-ui-react'
-import SemanticDatepicker from 'react-semantic-ui-datepickers';
 
 import './NewShow.scss';
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
@@ -114,7 +113,7 @@ class NewShow extends Component {
         return (
             <div className="NewShow">
                 <Form>
-                    {this.props.match.params.id ? <h1>Update Show</h1> : <h1>Add a Show</h1>}
+                    {this.props.match.params.id ? <h1>Edit Show Details</h1> : <h1>Add a Show</h1>}
                     <Form.Field>
                         <label>Date</label>
                         <input type="date" className="ui calendar" value={this.state.showData.date} onChange={(event) => this.handleChange("date", event.target.value)} />
@@ -141,7 +140,7 @@ class NewShow extends Component {
                     }
                     <div className="submit-button">
                         {this.props.match.params.id ? 
-                            <Button type="Submit" onClick={this.updateHandler}>Update Show</Button> :
+                            <Button type="Submit" onClick={this.updateHandler}>Save</Button> :
                             <Button type="Submit" onClick={this.postDataHandler}>Add Show</Button>
                         }
                     </div>

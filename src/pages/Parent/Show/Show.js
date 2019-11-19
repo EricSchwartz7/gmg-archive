@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button, Label, Modal, Input, Form, Card, Embed } from 'semantic-ui-react'
+import { Button, Embed } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom';
 import DeleteButton from "components/DeleteButton/DeleteButton";
 import FormatHelper from "FormatHelper"

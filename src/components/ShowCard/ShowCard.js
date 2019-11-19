@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Image, Label } from 'semantic-ui-react'
+import { Card, Label } from 'semantic-ui-react'
 
 import FormatHelper from "FormatHelper"
 import './ShowCard.scss'
@@ -8,7 +8,6 @@ const ShowCard = function(props) {
 
     return (
         <Card color="orange" fluid className="ShowCard">
-            {/* <Image className="show-image" src={props.img} size="small">Image</Image> */}
             <Card.Content>
                 <Card.Header size="small">
                     <Label ribbon>{props.date}</Label>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import axios from 'axios';
 import { Route, NavLink, Switch } from 'react-router-dom';
 
 import './Parent.css';
@@ -32,8 +31,7 @@ class Parent extends Component {
                                 >Stats</NavLink></li>
                             <li><NavLink to={{
                                 pathname: '/upload',
-                                hash: '#submit',
-                                search: '?quick-submit=true'
+                                hash: '#submit'
                             }}>Add a Show</NavLink></li>
                         </ul>
                     </nav>
@@ -44,6 +42,7 @@ class Parent extends Component {
                     <Route path="/upload/:id" component={NewShow} />
                     <Route path="/upload" component={NewShow} />
                     <Route path="/show/:id" component={Show} />
+                    <Route path="/stats" component={Stats} />
                 </Switch>
             </div>
         );

@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import axios from '../../../axios';
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Card, Dropdown } from 'semantic-ui-react';
 import _ from 'lodash';
 
-
-import Post from '../../../components/Post/Post';
 import './ShowsList.scss';
-import FullPost from '../FullPost/FullPost';
 import ShowCard from '../../../components/ShowCard/ShowCard'
-import { thisExpression } from '@babel/types';
+import FilterDropdown from '../../../components/FilterDropdown/FilterDropdown'
 
 class ShowsList extends Component {
     state = {
@@ -116,28 +113,14 @@ class ShowsList extends Component {
             <div>
                 <section className="ShowsList">
                     <div className="filters">
-                        <Dropdown
+                        <FilterDropdown
                             placeholder="Year"
-                            icon="filter"
-                            labeled
-                            selection
-                            clearable
-                            floating
-                            button
-                            className="icon"
                             onClick={this.getYears.bind(this)}
                             options={this.state.yearsList}
                             onChange={this.filterYear.bind(this)}
                         />
-                        <Dropdown
+                        <FilterDropdown
                             placeholder="Venue"
-                            icon="filter"
-                            labeled
-                            selection
-                            clearable
-                            floating
-                            button
-                            className="icon"
                             onClick={this.getVenues.bind(this)}
                             options={this.state.venuesList}
                             onChange={this.filterVenue.bind(this)}

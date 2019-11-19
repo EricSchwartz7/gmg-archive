@@ -32,24 +32,24 @@ class AddMediaDialog extends Component {
     }
 
     render() {
-
-        const { open, closeOnEscape, closeOnDimmerClick } = this.state
         return (
             <span>
-                <Button 
-                    onClick={this.show.bind(this)} 
-                >Add a video from YouTube</Button>
-                <Modal 
-                    open={this.state.open} 
-                >
+                <Button onClick={this.show.bind(this)}>Add a video from YouTube</Button>
+                <Modal open={this.state.open}>
                     <Modal.Header>Add a title and URL</Modal.Header>
                     <Modal.Content>
                         <Form>
                             <Form.Field>
-                                <Input placeholder="Title" onChange={(event) => this.handleChange("title", event.target.value)}/>
+                                <Input 
+                                    placeholder="Title" 
+                                    onChange={(event) => this.handleChange("title", event.target.value)}
+                                />
                             </Form.Field>
                             <Form.Field>
-                                <Input placeholder="ex. https://www.youtube.com/watch?v=xW30CHsezKU" onChange={(event) => this.handleChange("url", event.target.value)}/>
+                                <Input 
+                                    placeholder="ex. https://www.youtube.com/watch?v=xW30CHsezKU" 
+                                    onChange={(event) => this.handleChange("url", event.target.value)}
+                                />
                             </Form.Field>
                             <Button color="green" onClick={this.handleSubmit.bind(this)}>Submit</Button>
                             <Button onClick={this.close.bind(this)}>Cancel</Button>

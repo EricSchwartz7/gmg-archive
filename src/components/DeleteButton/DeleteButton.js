@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Button, Confirm } from 'semantic-ui-react'
-import { useHistory, Redirect } from 'react-router-dom';
-import ConfirmDialog from 'components/ConfirmDialog/ConfirmDialog';
-
-import "./DeleteButton.css";
 
 class DeleteButton extends Component {
     state = {

@@ -1,0 +1,29 @@
+.NewShow {
+    width: 80%;
+    margin: 20px auto;
+    padding: 15px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    background-color: orange;
+
+    h1 {
+        text-align: center;
+    }
+    
+    label {
+        display: block;
+        margin: 10px;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .accordion {
+        .title:not(.ui) {
+            text-align: left;
+        }
+    }
+    
+    .submit-button {
+        text-align: center;
+    }
+}
