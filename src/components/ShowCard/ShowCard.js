@@ -13,9 +13,7 @@ const ShowCard = function(props) {
                     <Label ribbon>{props.date}</Label>
                 </Card.Header>
                 <Card.Meta>
-                <span>
-                    {props.show.venue}
-                </span>
+                <span>{props.show.venue}</span>
                 </Card.Meta>
                 <div className="setlist-section">
                     <Card.Description>

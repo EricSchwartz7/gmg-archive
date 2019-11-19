@@ -26,21 +26,18 @@ class NewShow extends Component {
 
     loadData () {
         if ( this.props.match.params.id ) {
-            if ( !this.state.loadedShow || (this.state.loadedShow && this.state.loadedShow.id !== +this.props.match.params.id) ) {
-                axios.get( '/shows/' + this.props.match.params.id )
-                    .then( response => {
-                        // response.data.date = new Date(response.data.date);
-                        console.log(response);
-                        this.setState({
-                            showData: response.data
-                        });
-                    })
-                    .finally( () => {
-                        this.setState( { 
-                            loading: false
-                        });
+            axios.get( '/shows/' + this.props.match.params.id )
+                .then( response => {
+                    console.log(response);
+                    this.setState({
+                        showData: response.data
                     });
-            }
+                })
+                .finally( () => {
+                    this.setState( { 
+                        loading: false
+                    });
+                });
         }
     }
 
@@ -48,7 +45,6 @@ class NewShow extends Component {
     postDataHandler = () => {
         axios.post('/shows', this.state.showData)
             .then(response => {
-                // console.log(response);
                 this.setState({
                     routeToShow: true,
                     showID: response.data.id
@@ -86,8 +82,6 @@ class NewShow extends Component {
             return <Redirect to={'/show/' +  this.state.showID}/>
         }
 
-        let date = new Date(this.state.showData.date);
-
         const panels = [
             {
                 key: "secondSet",
@@ -116,7 +110,11 @@ class NewShow extends Component {
                     {this.props.match.params.id ? <h1>Edit Show Details</h1> : <h1>Add a Show</h1>}
                     <Form.Field>
                         <label>Date</label>
-                        <input type="date" className="ui calendar" value={this.state.showData.date} onChange={(event) => this.handleChange("date", event.target.value)} />
+                        <input 
+                            type="date" 
+                            className="ui calendar" 
+                            value={this.state.showData.date} 
+                            onChange={(event) => this.handleChange("date", event.target.value)}/>
                     </Form.Field>
                     <Form.Field>
                         <label>Venue</label>
@@ -135,14 +133,12 @@ class NewShow extends Component {
                                 this.state.showData.second_set ? 0 : -1,
                                 this.state.showData.encore ? 1 : -1
                             ]}
-                            exclusive={false}
-                        />
+                            exclusive={false}/>
                     }
                     <div className="submit-button">
                         {this.props.match.params.id ? 
                             <Button type="Submit" onClick={this.updateHandler}>Save</Button> :
-                            <Button type="Submit" onClick={this.postDataHandler}>Add Show</Button>
-                        }
+                            <Button type="Submit" onClick={this.postDataHandler}>Add Show</Button>}
                     </div>
                 </Form>
             </div>

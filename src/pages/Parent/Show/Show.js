@@ -5,6 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import DeleteButton from "components/DeleteButton/DeleteButton";
 import FormatHelper from "FormatHelper"
 import AddMediaDialog from "components/AddMediaDialog/AddMediaDialog"
+import _ from "lodash"
 
 import './Show.scss';
 
@@ -21,15 +22,15 @@ class Show extends Component {
     }
 
     loadShowData () {
-        if ( this.props.match.params.id ) {
-            if ( !this.state.loadedShow || (this.state.loadedShow && this.state.loadedShow.id !== +this.props.match.params.id) ) {
+        if (this.props.match.params.id && _.isEmpty(this.state.loadedShow)) {
+            // if ( !this.state.loadedShow || (this.state.loadedShow && this.state.loadedShow.id !== +this.props.match.params.id) ) {
                 axios.get( '/shows/' + this.props.match.params.id )
                     .then( response => {
                         this.setState({loadedShow: response.data});
                     }).catch( () => {
                         this.setState({loadedShow: "notfound"});
                     })
-            }
+            // }
         }
     }
 
@@ -114,8 +115,7 @@ class Show extends Component {
                                         style: {
                                           padding: 10,
                                         },
-                                      }}
-                                />
+                                      }}/>
                             </div>
                         )}
                     </div>

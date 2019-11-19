@@ -42,7 +42,6 @@ class Parent extends Component {
                     <Route path="/upload/:id" component={NewShow} />
                     <Route path="/upload" component={NewShow} />
                     <Route path="/show/:id" component={Show} />
-                    <Route path="/stats" component={Stats} />
                 </Switch>
             </div>
         );

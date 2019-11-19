@@ -13,7 +13,6 @@ const FilterDropdown = (props) =>
         placeholder={props.placeholder}
         onClick={props.onClick}
         options={props.options}
-        onChange={props.onChange}
-    />
+        onChange={props.onChange}/>
 
 export default FilterDropdown;

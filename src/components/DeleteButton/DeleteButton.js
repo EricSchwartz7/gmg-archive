@@ -7,8 +7,8 @@ class DeleteButton extends Component {
         open: false
     }
 
-    show = () => this.setState({ open: !this.state.open });
-    close = () => this.setState({ open: false });
+    show = () => this.setState({open: !this.state.open});
+    close = () => this.setState({open: false});
 
     handleDelete = () => {
         axios.delete("/shows/" + this.props.id).then( () => {
@@ -22,14 +22,12 @@ class DeleteButton extends Component {
             <span>
                 <Button
                     color="red"
-                    onClick={this.show} 
-                >
-                        Delete
-                        <Confirm
-                            open={this.state.open}
-                            content="Are you sure you want to delete this show and all of its data?"
-                            onConfirm={this.handleDelete}
-                        />
+                    onClick={this.show}>
+                    Delete
+                    <Confirm
+                        open={this.state.open}
+                        content="Are you sure you want to delete this show and all of its data?"
+                        onConfirm={this.handleDelete}/>
                 </Button>
             </span>
         );

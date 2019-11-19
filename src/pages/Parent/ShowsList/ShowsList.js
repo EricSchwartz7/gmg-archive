@@ -117,25 +117,20 @@ class ShowsList extends Component {
                             placeholder="Year"
                             onClick={this.getYears.bind(this)}
                             options={this.state.yearsList}
-                            onChange={this.filterYear.bind(this)}
-                        />
+                            onChange={this.filterYear.bind(this)}/>
                         <FilterDropdown
                             placeholder="Venue"
                             onClick={this.getVenues.bind(this)}
                             options={this.state.venuesList}
-                            onChange={this.filterVenue.bind(this)}
-                        />
+                            onChange={this.filterVenue.bind(this)}/>
                         <Dropdown
                             placeholder="Sort"
                             selection
                             options={sortOptions}
-                            onChange={this.sort.bind(this)}
-                        />
+                            onChange={this.sort.bind(this)}/>
                     </div>
                     <div className="cards">
-                        <Card.Group>
-                            {showCards}
-                        </Card.Group>
+                        <Card.Group>{showCards}</Card.Group>
                     </div>
                 </section>
             </div>
