@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import { Button, Form, Input, TextArea, Accordion } from 'semantic-ui-react'
+import { Button, Form, Input, TextArea, Accordion, Dropdown } from 'semantic-ui-react'
+import _ from 'lodash';
 
 import './NewShow.scss';
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
@@ -11,13 +12,14 @@ class NewShow extends Component {
         showData: {
             date: '',
             venue: '',
-            first_set: '',
+            first_set: [],
             second_set: '',
             encore: '',
         },
         routeToShow: false,
         showID: 0,
-        loading: true
+        songsList: [],
+        loading: true,
     }
 
     componentDidMount () {
@@ -77,6 +79,46 @@ class NewShow extends Component {
         });
     }
 
+    getAllSongs() {
+        axios.get("/songs")
+            .then(response => {
+                const songsList = response.data.map((song, i) => ({
+                    key: i,
+                    text: song.title,
+                    value: song.id
+                }));
+                this.setState({
+                    songsList: songsList
+                });
+            });
+    }
+
+    addSong(e, songData) {
+        // Add the selected song to the setlist
+        const firstSet = this.state.showData.first_set;
+        firstSet.push(songData.value)
+        this.setState({
+            showData: {
+                first_set: firstSet
+            }
+        });
+    }
+
+    convertFirstSet() {
+        const firstSetIDs = this.state.showData.first_set;
+        let convertedFirstSet = ""
+        firstSetIDs.forEach((songID, i) => {
+            let song = this.state.songsList.find(songData => {
+                return songData.value === songID
+            });
+            convertedFirstSet += song.text;
+            if (i !== firstSetIDs.length - 1) {
+                convertedFirstSet += ", ";
+            }
+        })
+        return convertedFirstSet;
+    }
+
     render () {
         if (this.state.routeToShow === true) {
             return <Redirect to={'/show/' +  this.state.showID}/>
@@ -104,6 +146,8 @@ class NewShow extends Component {
             }
         ]
 
+        let firstSetTitles = this.convertFirstSet();
+
         return (
             <div className="NewShow">
                 <Form>
@@ -122,7 +166,18 @@ class NewShow extends Component {
                     </Form.Field>
                     <Form.Field>
                         <label>First Set</label>
-                        <TextArea value={this.state.showData.first_set} onChange={(event) => this.handleChange("first_set", event.target.value)} />
+                        <Dropdown
+                            placeholder='Select Song'
+                            onClick={this.getAllSongs.bind(this)}
+                            fluid
+                            selection
+                            options={this.state.songsList}
+                            onChange={this.addSong.bind(this)}
+                        />
+                        <TextArea
+                            value={firstSetTitles} 
+                            // onChange={(event) => this.handleChange("first_set", event.target.value)} 
+                        />
                     </Form.Field>
                     {this.props.match.params.id && this.state.loading ? 
                         null :

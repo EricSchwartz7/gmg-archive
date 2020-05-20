@@ -6,6 +6,8 @@ import ShowsList from './ShowsList/ShowsList';
 import NewShow from './NewShow/NewShow';
 import About from './About/About';
 import Show from './Show/Show';
+import SongsList from './SongsList/SongsList';
+import Song from './Song/Song';
 
 class Parent extends Component {
     render () {
@@ -33,6 +35,9 @@ class Parent extends Component {
                                 pathname: '/upload',
                                 hash: '#submit'
                             }}>Add a Show</NavLink></li>
+                            <li><NavLink
+                                to="/songs/"
+                                >Songs</NavLink></li>
                         </ul>
                     </nav>
                 </header>
@@ -42,6 +47,8 @@ class Parent extends Component {
                     <Route path="/upload/:id" component={NewShow} />
                     <Route path="/upload" component={NewShow} />
                     <Route path="/show/:id" component={Show} />
+                    <Route path="/songs/" component={SongsList} />
+                    <Route path="/song/:id" component={Song} />
                 </Switch>
             </div>
         );

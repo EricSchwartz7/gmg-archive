@@ -29,7 +29,7 @@ class Show extends Component {
                         this.setState({loadedShow: response.data});
                     }).catch( () => {
                         this.setState({loadedShow: "notfound"});
-                    })
+                    });
             // }
         }
     }
@@ -61,7 +61,7 @@ class Show extends Component {
         );
     }
 
-    render () {
+    render() {
         let show = <p style={{ textAlign: 'center' }}>Please select a Show!</p>;
         if ( this.props.match.params.id ) {
             show = <p style={{ textAlign: 'center' }}>Loading show #{this.props.match.params.id}...</p>;

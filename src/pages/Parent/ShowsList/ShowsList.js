@@ -21,7 +21,7 @@ class ShowsList extends Component {
     }
 
     componentDidMount() {
-        this.sortAndFilter(this.state.filterAndSort);
+        this.sortFilterFetch(this.state.filterAndSort);
     }
 
     getYears() {
@@ -53,18 +53,18 @@ class ShowsList extends Component {
     }
 
     filterYear(e, data) {
-        this.sortAndFilter({...this.state.filterAndSort, year_filter: data.value});
+        this.sortFilterFetch({...this.state.filterAndSort, year_filter: data.value});
     }
 
     filterVenue(e, data) {
-        this.sortAndFilter({...this.state.filterAndSort, venue_filter: data.value});
+        this.sortFilterFetch({...this.state.filterAndSort, venue_filter: data.value});
     }
     
     sort(e, data) {
-        this.sortAndFilter({...this.state.filterAndSort, sort_order: data.value});
+        this.sortFilterFetch({...this.state.filterAndSort, sort_order: data.value});
     }
 
-    sortAndFilter(params) {
+    sortFilterFetch(params) {
         axios.post("/filtered_shows", params)
             .then( response => {
                 this.setState({ 
