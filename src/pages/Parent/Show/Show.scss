@@ -14,18 +14,25 @@
     }
 
     p {
-        text-align: left
+        text-align: left;
     }
-
-    span {
+    
+    .set-title {
         color: orange;
     }
-
+    
     .button-group button{
         margin: 5px;
     }
-
+    
     h3 {
         margin-top: 10px;
+    }
+
+    a {
+        color: white;
+        &:hover {
+            color: orange;
+        }
     }
 }

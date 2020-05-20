@@ -13,12 +13,14 @@ class Show extends Component {
     state = {
         loadedShow: {},
         loadedVideos: false,
-        videos: []
+        videos: [],
+        songsList: []
     }
 
     componentDidMount() {
         this.loadShowData();
         this.loadVideos();
+        this.getAllSongs();
     }
 
     loadShowData () {
@@ -44,6 +46,28 @@ class Show extends Component {
                     });
                 });
         }
+    }
+
+    getAllSongs() {
+        axios.get("/songs")
+            .then(response => {
+                const songsList = response.data.map((song, i) => ({
+                    key: i,
+                    text: song.title,
+                    value: song.id
+                }));
+                this.setState({
+                    songsList: songsList
+                });
+            });
+    }
+
+    createSongLinks() {
+        let songs = this.state.loadedShow.first_set_array || [];
+        return songs.map((song, i) => {
+            let addComma = (i < songs.length - 1);
+            return (<span><Link to={`/song/${song.id}`}>{song.title}</Link>{addComma ? ", " : ""}</span>)
+        })
     }
 
     deleteShow = () => {
@@ -72,9 +96,11 @@ class Show extends Component {
                     <h3>404 Not Found</h3>
                 </div>
             )
-        } else if (this.state.loadedShow && this.state.loadedVideos) {
+        } else if (this.state.loadedShow && this.state.loadedVideos && this.state.songsList.length > 0) {
             let date = new Date(this.state.loadedShow.date + " EST").toLocaleDateString();
-            let firstSet = FormatHelper.formatSetlist(this.state.loadedShow.first_set);
+
+            let firstSetSongs = this.createSongLinks();
+            
             let secondSet = FormatHelper.formatSetlist(this.state.loadedShow.second_set);
             let encore = FormatHelper.formatSetlist(this.state.loadedShow.encore);
 
@@ -92,7 +118,7 @@ class Show extends Component {
                 <div className="Show">
                     <h1>{date}</h1>
                     <h2>{this.state.loadedShow.venue}</h2>
-                    <p><span>SET 1: </span>{firstSet}</p>
+                    <p><span className="set-title">SET 1: </span>{firstSetSongs}</p>
                     {secondSet ? (<p><span>SET 2: </span>{secondSet}</p>) : null}
                     {encore ? (<p><span>ENCORE: </span>{encore}</p>) : null}
                     <div className="button-group">

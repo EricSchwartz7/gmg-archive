@@ -15,6 +15,7 @@ class NewShow extends Component {
             first_set: [],
             second_set: '',
             encore: '',
+            first_set_array: []
         },
         routeToShow: false,
         showID: 0,
@@ -24,6 +25,7 @@ class NewShow extends Component {
 
     componentDidMount () {
         this.loadData();
+        this.getAllSongs();
     }
 
     loadData () {
@@ -74,9 +76,12 @@ class NewShow extends Component {
     handleChange (field, value) {
         let showData = this.state.showData;
         showData[field] = value;
-        this.setState({
-            showData: showData
-        });
+        // debugger;
+        if (field != "first_set") {
+            this.setState({
+                showData: showData
+            });
+        }
     }
 
     getAllSongs() {
@@ -95,28 +100,30 @@ class NewShow extends Component {
 
     addSong(e, songData) {
         // Add the selected song to the setlist
-        const firstSet = this.state.showData.first_set;
-        firstSet.push(songData.value)
+        const showData = this.state.showData;
+        const firstSet = showData.first_set_array;
+        firstSet.push(songData.value);
         this.setState({
-            showData: {
-                first_set: firstSet
-            }
+            showData: showData
         });
     }
 
     convertFirstSet() {
-        const firstSetIDs = this.state.showData.first_set;
+        const firstSetIDs = this.state.showData.first_set_array;
         let convertedFirstSet = ""
-        firstSetIDs.forEach((songID, i) => {
-            let song = this.state.songsList.find(songData => {
-                return songData.value === songID
-            });
-            convertedFirstSet += song.text;
-            if (i !== firstSetIDs.length - 1) {
-                convertedFirstSet += ", ";
-            }
-        })
-        return convertedFirstSet;
+
+        if (firstSetIDs) {
+            firstSetIDs.forEach((songID, i) => {
+                let song = this.state.songsList.find(songData => {
+                    return songData.value === songID
+                });
+                convertedFirstSet += song.text;
+                if (i !== firstSetIDs.length - 1) {
+                    convertedFirstSet += ", ";
+                }
+            })
+            return convertedFirstSet;
+        }
     }
 
     render () {
@@ -146,7 +153,10 @@ class NewShow extends Component {
             }
         ]
 
-        let firstSetTitles = this.convertFirstSet();
+        let firstSetTitles = "";
+        if (this.state.songsList.length > 0) {
+            firstSetTitles = this.convertFirstSet();
+        }
 
         return (
             <div className="NewShow">
@@ -168,7 +178,7 @@ class NewShow extends Component {
                         <label>First Set</label>
                         <Dropdown
                             placeholder='Select Song'
-                            onClick={this.getAllSongs.bind(this)}
+                            // onClick={this.getAllSongs.bind(this)}
                             fluid
                             selection
                             options={this.state.songsList}
@@ -176,7 +186,7 @@ class NewShow extends Component {
                         />
                         <TextArea
                             value={firstSetTitles} 
-                            // onChange={(event) => this.handleChange("first_set", event.target.value)} 
+                            onChange={(event) => this.handleChange("first_set", event.target.value)} 
                         />
                     </Form.Field>
                     {this.props.match.params.id && this.state.loading ? 
