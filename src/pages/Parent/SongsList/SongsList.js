@@ -35,8 +35,8 @@ class SongsList extends Component {
     render() {
         let songList = this.state.songs.map((song, i) => {
             return (
-                <div>
-                    <Link className="song" to={"/song/" + song.id} key={i}><h3>{song.title}</h3></Link>
+                <div key={i}>
+                    <Link className="song" to={"/song/" + song.id}><h3>{song.title}</h3></Link>
                 </div>
             )
         })

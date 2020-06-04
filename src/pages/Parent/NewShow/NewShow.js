@@ -12,10 +12,7 @@ class NewShow extends Component {
         showData: {
             date: '',
             venue: '',
-            first_set: [],
-            second_set: '',
-            encore: '',
-            first_set_array: []
+            first_set: []
         },
         routeToShow: false,
         showID: 0,
@@ -101,30 +98,38 @@ class NewShow extends Component {
     addSong(e, songData) {
         // Add the selected song to the setlist
         const showData = this.state.showData;
-        const firstSet = showData.first_set_array;
+        const firstSet = showData.first_set;
         firstSet.push(songData.value);
         this.setState({
             showData: showData
         });
     }
 
-    convertFirstSet() {
-        const firstSetIDs = this.state.showData.first_set_array;
-        let convertedFirstSet = ""
+    // convertFirstSet() {
+    //     const firstSetIDs = this.state.showData.first_set;
+    //     let convertedFirstSet = ""
 
-        if (firstSetIDs) {
-            firstSetIDs.forEach((songID, i) => {
-                let song = this.state.songsList.find(songData => {
-                    return songData.value === songID
-                });
-                convertedFirstSet += song.text;
-                if (i !== firstSetIDs.length - 1) {
-                    convertedFirstSet += ", ";
-                }
-            })
-            return convertedFirstSet;
-        }
-    }
+    //     if (firstSetIDs.length > 0) {
+    //     //     firstSetSongs.forEach((song, i) => {
+    //     //         convertedFirstSet += song.title;
+    //     //         if (i !== firstSetSongs.length - 1) {
+    //     //             convertedFirstSet += ", ";
+    //     //         }
+    //     //     });
+
+    //         firstSetIDs.forEach((songID, i) => {
+    //             let song = this.state.songsList.find(songData => {
+    //                 return songData.value === songID
+    //             });
+    //             convertedFirstSet += song.text;
+    //             if (i !== firstSetIDs.length - 1) {
+    //                 convertedFirstSet += ", ";
+    //             }
+    //         })
+
+    //     }
+    //     return convertedFirstSet;
+    // }
 
     render () {
         if (this.state.routeToShow === true) {
@@ -155,7 +160,13 @@ class NewShow extends Component {
 
         let firstSetTitles = "";
         if (this.state.songsList.length > 0) {
-            firstSetTitles = this.convertFirstSet();
+            const firstSet = this.state.showData.first_set;
+            firstSet.forEach((song, i) => {
+                firstSetTitles += song.title;
+                if (i !== firstSet.length - 1) {
+                    firstSetTitles += ", ";
+                } 
+            });
         }
 
         return (

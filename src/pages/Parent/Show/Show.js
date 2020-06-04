@@ -63,10 +63,17 @@ class Show extends Component {
     }
 
     createSongLinks() {
-        let songs = this.state.loadedShow.first_set_array || [];
+        let songs = this.state.loadedShow.first_set || [];
         return songs.map((song, i) => {
             let addComma = (i < songs.length - 1);
-            return (<span><Link to={`/song/${song.id}`}>{song.title}</Link>{addComma ? ", " : ""}</span>)
+            return (
+                <span key={i}>
+                    <Link to={`/song/${song.id}`}>
+                        {song.title}
+                    </Link>
+                    {addComma ? ", " : ""}
+                </span>
+                )
         })
     }
 
