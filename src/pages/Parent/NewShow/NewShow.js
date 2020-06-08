@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 import './NewShow.scss';
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
+import SongTitle from '../../../components/SongTitle/SongTitle';
 
 class NewShow extends Component {
     state = {
@@ -158,17 +159,6 @@ class NewShow extends Component {
             }
         ]
 
-        let firstSetTitles = "";
-        if (this.state.songsList.length > 0) {
-            const firstSet = this.state.showData.first_set;
-            firstSet.forEach((song, i) => {
-                firstSetTitles += song.title;
-                if (i !== firstSet.length - 1) {
-                    firstSetTitles += ", ";
-                } 
-            });
-        }
-
         return (
             <div className="NewShow">
                 <Form>
@@ -195,10 +185,19 @@ class NewShow extends Component {
                             options={this.state.songsList}
                             onChange={this.addSong.bind(this)}
                         />
-                        <TextArea
+                        {/* <TextArea
                             value={firstSetTitles} 
                             onChange={(event) => this.handleChange("first_set", event.target.value)} 
-                        />
+                        /> */}
+                        <div>
+                            {this.state.showData.first_set.map((song, i) => {
+                                let last = false
+                                if (i === this.state.showData.first_set.length - 1) {
+                                    last = true;
+                                }
+                                return <SongTitle title={song.title} last={last} />
+                            })}
+                        </div>
                     </Form.Field>
                     {this.props.match.params.id && this.state.loading ? 
                         null :
