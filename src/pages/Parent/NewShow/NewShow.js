@@ -50,19 +50,18 @@ class NewShow extends Component {
                 this.setState({
                     routeToShow: true,
                     showID: response.data.id
-                })
+                });
             });
     }
 
     updateHandler = () => {
-        axios.put('/shows/' + this.props.match.params.id, {
-            show: this.state.showData
-        }).then(response => {
-            this.setState({
-                routeToShow: true,
-                showID: response.data.id
-            })
-        })
+        axios.put('/shows/' + this.props.match.params.id, this.state.showData)
+            .then(response => {
+                this.setState({
+                    routeToShow: true,
+                    showID: response.data.id
+                });
+            });
     }
 
     handleSelectDate = date => {
@@ -96,13 +95,25 @@ class NewShow extends Component {
             });
     }
 
-    addSong(e, songData) {
+    addSong(e, dropdownSelection) {
         // Add the selected song to the setlist
         const showData = this.state.showData;
         const firstSet = showData.first_set;
-        firstSet.push(songData.value);
+        const song = dropdownSelection.options.find( song => song.value === dropdownSelection.value );
+        const formattedSong = {
+                id: song.value,
+                title: song.text
+            }
+        firstSet.push(formattedSong);
         this.setState({
             showData: showData
+        });
+    }
+
+    deleteSong(props) {
+        this.state.showData.first_set.splice(props.position, 1);
+        this.setState({
+            showData: this.state.showData
         });
     }
 
@@ -195,7 +206,18 @@ class NewShow extends Component {
                                 if (i === this.state.showData.first_set.length - 1) {
                                     last = true;
                                 }
-                                return <SongTitle title={song.title} last={last} />
+                                return (
+                                    <div>
+                                        <SongTitle 
+                                            song={song} 
+                                            last={last} 
+                                            key={i} 
+                                            position={i} 
+                                            vertical 
+                                            button 
+                                            deleteSong={this.deleteSong.bind(this)}/>
+                                    </div>
+                                )
                             })}
                         </div>
                     </Form.Field>

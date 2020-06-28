@@ -1,14 +1,13 @@
 import React from 'react'
-// import { Card, Label } from 'semantic-ui-react'
-
-// import FormatHelper from "FormatHelper"
-// import './ShowCard.scss'
+import { Button } from 'semantic-ui-react'
 
 const SongTitle = function(props) {
 
+    const breakOrComma = props.vertical ? <br/> : ", ";
+
     return (
-        <span>{props.title}
-            {props.last ? "" : ", "}
+        <span>{props.song.title}
+            {props.last ? "" : breakOrComma}{props.button ? <Button onClick={props.deleteSong.bind(this, props)}>X</Button> : ""}
         </span>
     )
 }
