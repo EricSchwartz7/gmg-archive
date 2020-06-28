@@ -207,11 +207,10 @@ class NewShow extends Component {
                                     last = true;
                                 }
                                 return (
-                                    <div>
+                                    <div key={i}>
                                         <SongTitle 
                                             song={song} 
                                             last={last} 
-                                            key={i} 
                                             position={i} 
                                             vertical 
                                             button 

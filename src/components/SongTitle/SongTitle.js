@@ -3,11 +3,12 @@ import { Button } from 'semantic-ui-react'
 
 const SongTitle = function(props) {
 
-    const breakOrComma = props.vertical ? <br/> : ", ";
+    const addComma = props.vertical ? "" : ", ";
 
     return (
         <span>{props.song.title}
-            {props.last ? "" : breakOrComma}{props.button ? <Button onClick={props.deleteSong.bind(this, props)}>X</Button> : ""}
+            {props.last ? "" : addComma}
+            {props.vertical ? <Button onClick={props.deleteSong.bind(this, props)}>X</Button> : ""}
         </span>
     )
 }
