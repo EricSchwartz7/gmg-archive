@@ -17,15 +17,15 @@ const ShowCard = function(props) {
                 </Card.Meta>
                 <div className="setlist-section">
                     <Card.Description>
-                        <label>First Set: </label>{FormatHelper.formatSetlist(props.show.first_set)}
+                        <label>First Set: </label>{FormatHelper.formatSetlist(props.show.setlist, 1)}
                     </Card.Description>
                     {props.show.second_set ?
                         <Card.Description>
-                            <label>Second Set: </label>{FormatHelper.formatSetlist(props.show.second_set)}
+                            <label>Second Set: </label>{FormatHelper.formatSetlist(props.show.setlist, 2)}
                         </Card.Description> : null}
                     {props.show.encore ?
                         <Card.Description>
-                            <label>Encore: </label>{FormatHelper.formatSetlist(props.show.encore)}
+                            <label>Encore: </label>{FormatHelper.formatSetlist(props.show.setlist, 3)}
                         </Card.Description> : null}
                 </div>
             </Card.Content>

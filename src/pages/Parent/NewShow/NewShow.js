@@ -13,7 +13,8 @@ class NewShow extends Component {
         showData: {
             date: '',
             venue: '',
-            first_set: []
+            first_set: [],
+            setlist: []
         },
         routeToShow: false,
         showID: 0,
@@ -74,7 +75,7 @@ class NewShow extends Component {
         let showData = this.state.showData;
         showData[field] = value;
         // debugger;
-        if (field != "first_set") {
+        if (field != "setlist") {
             this.setState({
                 showData: showData
             });
@@ -98,20 +99,20 @@ class NewShow extends Component {
     addSong(e, dropdownSelection) {
         // Add the selected song to the setlist
         const showData = this.state.showData;
-        const firstSet = showData.first_set;
+        const setlist = showData.setlist;
         const song = dropdownSelection.options.find( song => song.value === dropdownSelection.value );
         const formattedSong = {
                 id: song.value,
                 title: song.text
             }
-        firstSet.push(formattedSong);
+        setlist.push(formattedSong);
         this.setState({
             showData: showData
         });
     }
 
     deleteSong(props) {
-        this.state.showData.first_set.splice(props.position, 1);
+        this.state.showData.setlist.splice(props.song.position, 1);
         this.setState({
             showData: this.state.showData
         });
@@ -196,14 +197,10 @@ class NewShow extends Component {
                             options={this.state.songsList}
                             onChange={this.addSong.bind(this)}
                         />
-                        {/* <TextArea
-                            value={firstSetTitles} 
-                            onChange={(event) => this.handleChange("first_set", event.target.value)} 
-                        /> */}
                         <div>
-                            {this.state.showData.first_set.map((song, i) => {
+                            {this.state.showData.setlist.map((song, i) => {
                                 let last = false
-                                if (i === this.state.showData.first_set.length - 1) {
+                                if (i === this.state.showData.setlist.length - 1) {
                                     last = true;
                                 }
                                 return (
@@ -211,7 +208,6 @@ class NewShow extends Component {
                                         <SongTitle 
                                             song={song} 
                                             last={last} 
-                                            position={i} 
                                             vertical 
                                             button 
                                             deleteSong={this.deleteSong.bind(this)}/>

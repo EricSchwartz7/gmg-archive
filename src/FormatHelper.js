@@ -5,11 +5,13 @@ export default {
     //     }
     // }
 
-    formatSetlist(setlist) {
+    formatSetlist(setlist, setNumber) {
         if (setlist) {
-            return setlist.map((song, i) => {
-                return (i === setlist.length - 1) ? song.title : `${song.title}, `
-            });
+            return setlist
+                .filter(song => song.set === setNumber)
+                .map((song, i) => {
+                    return (i === setlist.length - 1) ? song.title : `${song.title}, `
+                });
         }
     }
 }
