@@ -6,6 +6,10 @@ import './ShowCard.scss'
 
 const ShowCard = function(props) {
 
+    const firstSet = FormatHelper.formatSetlist(props.show.setlist, 1);
+    const secondSet = FormatHelper.formatSetlist(props.show.setlist, 2);
+    const encore = FormatHelper.formatSetlist(props.show.setlist, 3);
+
     return (
         <Card color="orange" fluid className="ShowCard">
             <Card.Content>
@@ -17,16 +21,18 @@ const ShowCard = function(props) {
                 </Card.Meta>
                 <div className="setlist-section">
                     <Card.Description>
-                        <label>First Set: </label>{FormatHelper.formatSetlist(props.show.setlist, 1)}
+                        <div><label>First Set: </label>{firstSet}</div>
                     </Card.Description>
-                    {props.show.second_set ?
-                        <Card.Description>
-                            <label>Second Set: </label>{FormatHelper.formatSetlist(props.show.setlist, 2)}
-                        </Card.Description> : null}
-                    {props.show.encore ?
-                        <Card.Description>
-                            <label>Encore: </label>{FormatHelper.formatSetlist(props.show.setlist, 3)}
-                        </Card.Description> : null}
+                    <Card.Description>
+                        {secondSet.length > 0 ?
+                            <div><label>Second Set: </label>{secondSet}</div> : null
+                        }
+                    </Card.Description>
+                    <Card.Description>
+                        {encore.length > 0 ?
+                            <div><label>Encore: </label>{encore}</div> : null
+                        }
+                    </Card.Description>
                 </div>
             </Card.Content>
         </Card>

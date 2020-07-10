@@ -62,19 +62,21 @@ class Show extends Component {
             });
     }
 
-    createSongLinks() {
-        let songs = this.state.loadedShow.first_set || [];
-        return songs.map((song, i) => {
-            let addComma = (i < songs.length - 1);
-            return (
-                <span key={i}>
-                    <Link to={`/song/${song.id}`}>
-                        {song.title}
-                    </Link>
-                    {addComma ? ", " : ""}
-                </span>
-                )
-        })
+    createSongLinks(setNumber) {
+        let songs = this.state.loadedShow.setlist.filter(song => song.set === setNumber);
+        if (songs.length > 0) {
+            return songs.map((song, i) => {
+                let addComma = (i < songs.length - 1);
+                return (
+                    <span key={i}>
+                        <Link to={`/song/${song.id}`}>
+                            {song.title}
+                        </Link>
+                        {addComma ? ", " : ""}
+                    </span>
+                    )
+            })
+        }
     }
 
     deleteShow = () => {
@@ -103,13 +105,12 @@ class Show extends Component {
                     <h3>404 Not Found</h3>
                 </div>
             )
-        } else if (this.state.loadedShow && this.state.loadedVideos && this.state.songsList.length > 0) {
+        } else if (this.state.loadedShow.venue && this.state.loadedVideos && this.state.songsList.length > 0) {
             let date = new Date(this.state.loadedShow.date + " EST").toLocaleDateString();
 
-            let firstSetSongs = this.createSongLinks();
-            
-            let secondSet = FormatHelper.formatSetlist(this.state.loadedShow.second_set);
-            let encore = FormatHelper.formatSetlist(this.state.loadedShow.encore);
+            let firstSetSongs = this.createSongLinks(1);
+            let secondSet = this.createSongLinks(2);
+            let encore = this.createSongLinks(3);
 
             const YOUTUBE_CONSTANT = "watch?v=";
             const videos = this.state.videos.map( (video) => {
@@ -126,8 +127,8 @@ class Show extends Component {
                     <h1>{date}</h1>
                     <h2>{this.state.loadedShow.venue}</h2>
                     <p><span className="set-title">SET 1: </span>{firstSetSongs}</p>
-                    {secondSet ? (<p><span>SET 2: </span>{secondSet}</p>) : null}
-                    {encore ? (<p><span>ENCORE: </span>{encore}</p>) : null}
+                    {secondSet ? (<p><span className="set-title">SET 2: </span>{secondSet}</p>) : null}
+                    {encore ? (<p><span className="set-title">ENCORE: </span>{encore}</p>) : null}
                     <div className="button-group">
                         <Link to={'/upload/' + this.props.match.params.id}>        
                             <Button>Edit</Button>

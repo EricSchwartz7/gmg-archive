@@ -96,14 +96,15 @@ class NewShow extends Component {
             });
     }
 
-    addSong(e, dropdownSelection) {
+    addSong(setNumber, e, dropdownSelection) {
         // Add the selected song to the setlist
         const showData = this.state.showData;
         const setlist = showData.setlist;
         const song = dropdownSelection.options.find( song => song.value === dropdownSelection.value );
         const formattedSong = {
                 id: song.value,
-                title: song.text
+                title: song.text,
+                set: setNumber
             }
         setlist.push(formattedSong);
         this.setState({
@@ -118,58 +119,43 @@ class NewShow extends Component {
         });
     }
 
-    // convertFirstSet() {
-    //     const firstSetIDs = this.state.showData.first_set;
-    //     let convertedFirstSet = ""
-
-    //     if (firstSetIDs.length > 0) {
-    //     //     firstSetSongs.forEach((song, i) => {
-    //     //         convertedFirstSet += song.title;
-    //     //         if (i !== firstSetSongs.length - 1) {
-    //     //             convertedFirstSet += ", ";
-    //     //         }
-    //     //     });
-
-    //         firstSetIDs.forEach((songID, i) => {
-    //             let song = this.state.songsList.find(songData => {
-    //                 return songData.value === songID
-    //             });
-    //             convertedFirstSet += song.text;
-    //             if (i !== firstSetIDs.length - 1) {
-    //                 convertedFirstSet += ", ";
-    //             }
-    //         })
-
-    //     }
-    //     return convertedFirstSet;
-    // }
-
     render () {
         if (this.state.routeToShow === true) {
             return <Redirect to={'/show/' +  this.state.showID}/>
         }
 
-        const panels = [
-            {
-                key: "secondSet",
-                title: "Second Set",
-                content: {
-                    as: Form.TextArea,
-                    value: this.state.showData.second_set,
-                    onChange: (event) => this.handleChange("second_set", event.target.value)
-                }
-            },
-            {
-                key: "encore",
-                title: "Encore",
-                content: {
-                    as: Form.TextArea,
-                    rows: 1,
-                    value: this.state.showData.encore,
-                    onChange: (event) => this.handleChange("encore", event.target.value)
-                }
-            }
-        ]
+        const selectSongDropdown = setNumber => {
+            return <Dropdown
+                placeholder='Select Song'
+                fluid
+                selection
+                options={this.state.songsList}
+                onChange={this.addSong.bind(this, setNumber)}
+            />
+        }
+
+        const songsListed = setNumber => {
+            return this.state.showData.setlist
+                .filter(song => song.set === setNumber)
+                .map((song, i) => {
+                    let last = false
+                    if (i === this.state.showData.setlist.length - 1) {
+                        last = true;
+                    }
+                    return (
+                        <div key={i}>
+                            <SongTitle 
+                                song={song} 
+                                last={last} 
+                                vertical 
+                                button 
+                                deleteSong={this.deleteSong.bind(this)}/>
+                        </div>
+                    )
+                })
+        };
+
+        const firstSetSongs = songsListed(1);
 
         return (
             <div className="NewShow">
@@ -189,44 +175,19 @@ class NewShow extends Component {
                     </Form.Field>
                     <Form.Field>
                         <label>First Set</label>
-                        <Dropdown
-                            placeholder='Select Song'
-                            // onClick={this.getAllSongs.bind(this)}
-                            fluid
-                            selection
-                            options={this.state.songsList}
-                            onChange={this.addSong.bind(this)}
-                        />
-                        <div>
-                            {this.state.showData.setlist.map((song, i) => {
-                                let last = false
-                                if (i === this.state.showData.setlist.length - 1) {
-                                    last = true;
-                                }
-                                return (
-                                    <div key={i}>
-                                        <SongTitle 
-                                            song={song} 
-                                            last={last} 
-                                            vertical 
-                                            button 
-                                            deleteSong={this.deleteSong.bind(this)}/>
-                                    </div>
-                                )
-                            })}
-                        </div>
+                        {selectSongDropdown(1)}
+                        {songsListed(1)}
                     </Form.Field>
-                    {this.props.match.params.id && this.state.loading ? 
-                        null :
-                        <Accordion 
-                            as={Form.Field} 
-                            panels={panels} 
-                            defaultActiveIndex={[
-                                this.state.showData.second_set ? 0 : -1,
-                                this.state.showData.encore ? 1 : -1
-                            ]}
-                            exclusive={false}/>
-                    }
+                        <Form.Field>
+                        <label>Second Set</label>
+                        {selectSongDropdown(2)}
+                        {songsListed(2)}
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Encore</label>
+                        {selectSongDropdown(3)}
+                        {songsListed(3)}
+                    </Form.Field>
                     <div className="submit-button">
                         {this.props.match.params.id ? 
                             <Button type="Submit" onClick={this.updateHandler}>Save</Button> :

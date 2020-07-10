@@ -9,8 +9,8 @@ export default {
         if (setlist) {
             return setlist
                 .filter(song => song.set === setNumber)
-                .map((song, i) => {
-                    return (i === setlist.length - 1) ? song.title : `${song.title}, `
+                .map((song, i, individualSet) => {
+                    return (i === individualSet.length - 1) ? song.title : `${song.title}, `
                 });
         }
     }
