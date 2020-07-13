@@ -125,11 +125,13 @@ class NewShow extends Component {
         }
 
         const selectSongDropdown = setNumber => {
+            const songsList = this.state.songsList.sort((a, b) => (a.text > b.text) ? 1 : -1);
             return <Dropdown
                 placeholder='Select Song'
                 fluid
+                search
                 selection
-                options={this.state.songsList}
+                options={songsList}
                 onChange={this.addSong.bind(this, setNumber)}
             />
         }
