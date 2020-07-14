@@ -25,6 +25,7 @@ class NewShow extends Component {
     componentDidMount () {
         this.loadData();
         this.getAllSongs();
+        this.updatePositions();
     }
 
     loadData () {
@@ -96,24 +97,44 @@ class NewShow extends Component {
             });
     }
 
+    updatePositions() {
+        const showData = this.state.showData;
+        const setlist = showData.setlist;
+        const sortedSetlist = [];
+        for (let i = 1; i <= 3; i++) {
+            let currentSet = setlist.filter(song => song.set === i);
+            if (currentSet.length > 0) {
+                let sortedSet = currentSet.sort((a, b) => a.position - b.position);
+                sortedSetlist.push(...sortedSet);
+            }
+        }
+        sortedSetlist.forEach((song, i) => {
+            song.tempPosition = i
+        })
+        showData.setlist = sortedSetlist;
+        this.setState({
+            showData: showData
+        })
+    }
+
     addSong(setNumber, e, dropdownSelection) {
-        // Add the selected song to the setlist
         const showData = this.state.showData;
         const setlist = showData.setlist;
         const song = dropdownSelection.options.find( song => song.value === dropdownSelection.value );
+
         const formattedSong = {
-                id: song.value,
-                title: song.text,
-                set: setNumber
-            }
+            id: song.value,
+            title: song.text,
+            set: setNumber
+        }
         setlist.push(formattedSong);
-        this.setState({
-            showData: showData
-        });
+        this.updatePositions();
     }
 
     deleteSong(props) {
-        this.state.showData.setlist.splice(props.song.position, 1);
+        const setlist = this.state.showData.setlist;
+        setlist.splice(props.song.tempPosition, 1);
+        this.updatePositions();
         this.setState({
             showData: this.state.showData
         });
@@ -156,8 +177,6 @@ class NewShow extends Component {
                     )
                 })
         };
-
-        const firstSetSongs = songsListed(1);
 
         return (
             <div className="NewShow">
