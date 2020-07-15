@@ -8,6 +8,7 @@ import About from './About/About';
 import Show from './Show/Show';
 import SongsList from './SongsList/SongsList';
 import Song from './Song/Song';
+import Stats from './Stats/Stats';
 
 class Parent extends Component {
     render () {
@@ -49,6 +50,7 @@ class Parent extends Component {
                     <Route path="/show/:id" component={Show} />
                     <Route path="/songs/" component={SongsList} />
                     <Route path="/song/:id" component={Song} />
+                    <Route path="/stats/" component={Stats} />
                 </Switch>
             </div>
         );

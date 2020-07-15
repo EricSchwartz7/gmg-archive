@@ -13,7 +13,6 @@ class NewShow extends Component {
         showData: {
             date: '',
             venue: '',
-            first_set: [],
             setlist: []
         },
         routeToShow: false,
@@ -25,7 +24,6 @@ class NewShow extends Component {
     componentDidMount () {
         this.loadData();
         this.getAllSongs();
-        this.updatePositions();
     }
 
     loadData () {
@@ -36,6 +34,7 @@ class NewShow extends Component {
                     this.setState({
                         showData: response.data
                     });
+                    this.updatePositions();
                 })
                 .finally( () => {
                     this.setState( { 

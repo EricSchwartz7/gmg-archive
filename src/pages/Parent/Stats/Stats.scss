@@ -1,0 +1,18 @@
+.Stats {
+    display: block;
+    justify-content: center;
+    margin: auto;
+    padding: 3em;
+
+    h1 {
+        text-align: center;
+    }
+
+    .statistics {
+        display: flex;
+    }
+
+    .column {
+        flex: 50%;
+    }
+}
