@@ -8,11 +8,19 @@
         text-align: center;
     }
 
-    .statistics {
-        display: flex;
+    .dropdown {
+        text-align: center;
     }
 
-    .column {
-        flex: 50%;
+    .statistics {
+        text-align: center;
+    }
+
+    .song-list {
+        padding-top: 15px;
+    }
+
+    .single-song {
+        padding: 3px;
     }
 }

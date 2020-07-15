@@ -8,88 +8,88 @@ import './Stats.scss';
 class Stats extends Component {
     state = {
         statSelected: "",
-        currentStatArray: [],
-        times_played_list: [],
-        percentage_played_list: [],
-        first_set_openers: [],
-        second_set_openers: [],
-        first_set_closers: [],
-        second_set_closers: [],
-        encore_appearances: []
+        currentStatArray: []
+        // times_played_list: [],
+        // percentage_played_list: [],
+        // first_set_openers: [],
+        // second_set_openers: [],
+        // first_set_closers: [],
+        // second_set_closers: [],
+        // encore_appearances: []
     }
 
-    componentWillMount() {
-        this.fetchAllTimesPlayed();
-        this.fetchAllPercentagePlayed();
-        this.fetchSetOpenerCounts(1);
-        this.fetchSetOpenerCounts(2);
-        this.fetchSetCloserCounts(1);
-        this.fetchSetCloserCounts(2);
-        this.fetchEncoreAppearances();
-    }
+    // componentWillMount() {
+    //     this.fetchAllTimesPlayed();
+    //     this.fetchAllPercentagePlayed();
+    //     this.fetchSetOpenerCounts(1);
+    //     this.fetchSetOpenerCounts(2);
+    //     this.fetchSetCloserCounts(1);
+    //     this.fetchSetCloserCounts(2);
+    //     this.fetchEncoreAppearances();
+    // }
 
-    fetchAllTimesPlayed() {
-        axios.get("/all_times_played")
-            .then(response => {
-                this.setState({
-                    times_played_list: response.data
-                });
-            });
-    }
+    // fetchAllTimesPlayed() {
+    //     axios.get("/all_times_played")
+    //         .then(response => {
+    //             this.setState({
+    //                 times_played_list: response.data
+    //             });
+    //         });
+    // }
 
-    fetchAllPercentagePlayed() {
-        axios.get("/all_percentage_played")
-            .then(response => {
-                this.setState({
-                    percentage_played_list: response.data
-                });
-            });
-    }
+    // fetchAllPercentagePlayed() {
+    //     axios.get("/all_percentage_played")
+    //         .then(response => {
+    //             this.setState({
+    //                 percentage_played_list: response.data
+    //             });
+    //         });
+    // }
 
-    fetchSetOpenerCounts(setNumber) {   
-        axios.get("/all_set_openers/" + setNumber)
-            .then(response => {
-                switch(setNumber) {
-                    case 1:
-                        this.setState({
-                            first_set_openers: response.data
-                        });
-                        break;
-                    case 2:
-                        this.setState({
-                            second_set_openers: response.data
-                        });
-                        break;
-                }
-            });
-    }
+    // fetchSetOpenerCounts(setNumber) {   
+    //     axios.get("/all_set_openers/" + setNumber)
+    //         .then(response => {
+    //             switch(setNumber) {
+    //                 case 1:
+    //                     this.setState({
+    //                         first_set_openers: response.data
+    //                     });
+    //                     break;
+    //                 case 2:
+    //                     this.setState({
+    //                         second_set_openers: response.data
+    //                     });
+    //                     break;
+    //             }
+    //         });
+    // }
 
-    fetchSetCloserCounts(setNumber) {   
-        axios.get("/all_set_closers/" + setNumber)
-            .then(response => {
-                switch(setNumber) {
-                    case 1:
-                        this.setState({
-                            first_set_closers: response.data
-                        });
-                        break;
-                    case 2:
-                        this.setState({
-                            second_set_closers: response.data
-                        });
-                        break;
-                }
-            });
-    }
+    // fetchSetCloserCounts(setNumber) {   
+    //     axios.get("/all_set_closers/" + setNumber)
+    //         .then(response => {
+    //             switch(setNumber) {
+    //                 case 1:
+    //                     this.setState({
+    //                         first_set_closers: response.data
+    //                     });
+    //                     break;
+    //                 case 2:
+    //                     this.setState({
+    //                         second_set_closers: response.data
+    //                     });
+    //                     break;
+    //             }
+    //         });
+    // }
 
-    fetchEncoreAppearances() {
-        axios.get("/all_encore_appearances")
-            .then(response => {
-                this.setState({
-                    encore_appearances: response.data
-                });
-            });
-    }
+    // fetchEncoreAppearances() {
+    //     axios.get("/all_encore_appearances")
+    //         .then(response => {
+    //             this.setState({
+    //                 encore_appearances: response.data
+    //             });
+    //         });
+    // }
 
     handleSelectStat(e, valueObj) {
         const selectedObj = valueObj.options.find(option => option.value === valueObj.value);
@@ -101,7 +101,6 @@ class Stats extends Component {
         this.setState({
             statSelected: selectedObj
         });
-        // alert(selectedObj.func)
     }
 
     render() {
@@ -110,13 +109,11 @@ class Stats extends Component {
             {
                 text: "Times Played",
                 value: "timesPlayed",
-                // func: this.fetchAllTimesPlayed,
                 path: "/all_times_played"
             },
             {
                 text: "Percentage of Shows",
                 value: "showPercentage",
-                // func: this.fetchAllPercentagePlayed,
                 path: "/all_percentage_played"
             },
             {
@@ -149,26 +146,26 @@ class Stats extends Component {
         const selectStatDropdown = () => {
             return <Dropdown
                 placeholder='Select Stat'
-                fluid
                 selection
                 options={statsList}
                 onChange={this.handleSelectStat.bind(this)}
             />
         }
 
+        let showPercentSign = () => {
+            return this.state.statSelected.value === "showPercentage"
+        }
+
         return (
             <section className="Stats">
                 <h1>Statistics</h1>
-                <div>
-                    {selectStatDropdown()}
-                </div>
                 <div className="statistics">
-
-                    <div className="column">
-                        <h3>{this.state.statSelected.text}</h3>
+                    {selectStatDropdown()}
+                    <div className="song-list">
+                        {/* <h3>{this.state.statSelected.text}</h3> */}
                         {this.state.currentStatArray.map((song, i) => {
-                            return <div key={i}>
-                                <Link to={"/song/" + song.id}>{song.title}</Link> - {song.value}
+                            return <div className="single-song" key={i}>
+                                <Link to={"/song/" + song.id}>{song.title}</Link> - {showPercentSign() ? "%" : ""}{song.value}
                             </div>
                         })}
                     </div>
