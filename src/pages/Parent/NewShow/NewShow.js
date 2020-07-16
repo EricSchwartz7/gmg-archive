@@ -7,6 +7,7 @@ import _ from 'lodash';
 import './NewShow.scss';
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
 import SongTitle from '../../../components/SongTitle/SongTitle';
+import DeleteButton from "components/DeleteButton/DeleteButton";
 
 class NewShow extends Component {
     state = {
@@ -208,11 +209,14 @@ class NewShow extends Component {
                         {selectSongDropdown(3)}
                         {songsListed(3)}
                     </Form.Field>
-                    <div className="submit-button">
-                        {this.props.match.params.id ? 
-                            <Button type="Submit" onClick={this.updateHandler}>Save</Button> :
-                            <Button type="Submit" onClick={this.postDataHandler}>Add Show</Button>}
-                    </div>
+                    {this.props.match.params.id ? 
+                        <div className="submit-button">
+                            <Button type="Submit" onClick={this.updateHandler}>Save</Button>
+                            <DeleteButton history={this.props.history} id={this.props.match.params.id} /> 
+                        </div> :
+                        <div className="submit-button">
+                            <Button type="Submit" onClick={this.postDataHandler}>Add Show</Button>
+                        </div>}
                 </Form>
             </div>
         );

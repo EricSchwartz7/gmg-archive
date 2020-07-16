@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Button, Confirm } from 'semantic-ui-react'
+import './DeleteButton.scss';
 
 class DeleteButton extends Component {
     state = {
@@ -19,17 +20,17 @@ class DeleteButton extends Component {
 
     render() {
         return (
-            <span>
+            <div className="DeleteButton">
                 <Button
                     color="red"
                     onClick={this.show}>
-                    Delete
+                    Delete Show
                     <Confirm
                         open={this.state.open}
                         content="Are you sure you want to delete this show and all of its data?"
                         onConfirm={this.handleDelete}/>
                 </Button>
-            </span>
+            </div>
         );
     }
 }

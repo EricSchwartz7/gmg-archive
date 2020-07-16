@@ -79,11 +79,11 @@ class Show extends Component {
         }
     }
 
-    deleteShow = () => {
-        axios.delete("/shows/" + this.props.match.params.id)
-        let history = useHistory();
-        history.push("/shows");
-    }
+    // deleteShow = () => {
+    //     axios.delete("/shows/" + this.props.match.params.id)
+    //     let history = useHistory();
+    //     history.push("/shows");
+    // }
 
     handleSubmit(videoData) {
         videoData.show_id = this.props.match.params.id;
@@ -134,7 +134,7 @@ class Show extends Component {
                             <Button>Edit</Button>
                         </Link>
                         <AddMediaDialog handleSubmit={this.handleSubmit.bind(this)}/>
-                        <DeleteButton history={this.props.history} id={this.props.match.params.id} />
+                        {/* <DeleteButton history={this.props.history} id={this.props.match.params.id} /> */}
                     </div>
                     <div className="videos">
                         {videos.map( (video, i) => 
