@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import './Song.scss';
 
 class Song extends Component {
     state = {
-        loadedSong: {}
+        loadedSong: {},
+        showAppearances: []
     }
 
     componentDidMount() {
         this.loadSongData();
+        this.fetchShowAppearances();
     }
 
     loadSongData() {
@@ -19,6 +22,15 @@ class Song extends Component {
                     this.setState({loadedSong: response.data})
                 }).catch( () => {
                     this.setState({loadedShow: "notfound"});
+                });
+        }
+    }
+
+    fetchShowAppearances() {
+        if (this.props.match.params.id) {
+            axios.get("/show_appearances/" + this.props.match.params.id)
+                .then(response => {
+                    this.setState({showAppearances: response.data});
                 });
         }
     }
@@ -38,7 +50,15 @@ class Song extends Component {
             song = (
                 <div className="Song">
                     <h1>{this.state.loadedSong.title}</h1>
-                    <p>{this.state.loadedSong.lyrics}</p>
+                    <h3>{this.state.loadedSong.title} was played at the following shows:</h3>
+                    <div className="show-list">
+                        {this.state.showAppearances.map((show, i) => {
+                            return <div key={i}>
+                                <Link className="show" to={"/show/" + show.id}>{show.date} - {show.venue}</Link>
+                            </div>
+                        })}
+                    </div>
+                    <p className="lyrics">{this.state.loadedSong.lyrics}</p>
                 </div>
             )
         }

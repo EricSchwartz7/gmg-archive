@@ -149,7 +149,6 @@ class NewShow extends Component {
             const songsList = this.state.songsList.sort((a, b) => (a.text > b.text) ? 1 : -1);
             return <Dropdown
                 placeholder='Select Song'
-                fluid
                 search
                 selection
                 options={songsList}
@@ -197,21 +196,27 @@ class NewShow extends Component {
                     <Form.Field>
                         <label>First Set</label>
                         {selectSongDropdown(1)}
-                        {songsListed(1)}
+                        <div className="songs-listed">
+                            {songsListed(1)}
+                        </div>
                     </Form.Field>
                         <Form.Field>
                         <label>Second Set</label>
                         {selectSongDropdown(2)}
-                        {songsListed(2)}
+                        <div className="songs-listed">
+                            {songsListed(2)}
+                        </div>
                     </Form.Field>
                     <Form.Field>
                         <label>Encore</label>
                         {selectSongDropdown(3)}
-                        {songsListed(3)}
+                        <div className="songs-listed">
+                            {songsListed(3)}
+                        </div>
                     </Form.Field>
                     {this.props.match.params.id ? 
                         <div className="submit-button">
-                            <Button type="Submit" onClick={this.updateHandler}>Save</Button>
+                            <Button className="save-button" type="Submit" onClick={this.updateHandler}>Save</Button>
                             <DeleteButton history={this.props.history} id={this.props.match.params.id} /> 
                         </div> :
                         <div className="submit-button">

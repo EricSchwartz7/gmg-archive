@@ -1,14 +1,20 @@
-import React from 'react'
-import { Button } from 'semantic-ui-react'
+import React from 'react';
+import { Button } from 'semantic-ui-react';
+import "./SongTitle.scss";
 
 const SongTitle = function(props) {
 
     const addComma = props.vertical ? "" : ", ";
 
     return (
-        <span>{props.song.title}
+        <span className="SongTitle">{props.song.title}
             {props.last ? "" : addComma}
-            {props.vertical ? <Button onClick={props.deleteSong.bind(this, props)}>X</Button> : ""}
+            &nbsp;
+            {props.vertical ? 
+                <Button 
+                    icon
+                    onClick={props.deleteSong.bind(this, props)}
+                >X</Button> : ""}
         </span>
     )
 }

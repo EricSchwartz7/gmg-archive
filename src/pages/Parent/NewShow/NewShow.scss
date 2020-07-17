@@ -1,5 +1,6 @@
 .NewShow {
-    width: 80%;
+    width: 50%;
+    min-width: 400px;
     margin: 20px auto;
     padding: 15px;
     border: 1px solid #eee;
@@ -23,7 +24,16 @@
         }
     }
     
+    .songs-listed {
+        margin-top: 10px;
+    }
+    
     .submit-button {
         text-align: center;
+
+        .save-button {
+            color: white;
+            background-color: #003300
+        }
     }
 }
