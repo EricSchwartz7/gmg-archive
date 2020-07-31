@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button, Embed } from 'semantic-ui-react'
+import { Button, Embed, Card } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom';
 import DeleteButton from "components/DeleteButton/DeleteButton";
 import FormatHelper from "FormatHelper"
 import AddMediaDialog from "components/AddMediaDialog/AddMediaDialog"
+import {Image, Video, Transformation, CloudinaryContext} from 'cloudinary-react';
+import {Cloudinary} from 'cloudinary-core';
 import _ from "lodash"
 
 import './Show.scss';
@@ -14,6 +16,8 @@ class Show extends Component {
         loadedShow: {},
         loadedVideos: false,
         videos: [],
+        photos: [],
+        uploadWidget: {},
         songsList: []
     }
 
@@ -21,11 +25,12 @@ class Show extends Component {
         this.loadShowData();
         this.loadVideos();
         this.getAllSongs();
+        this.loadPhotos();
+        // this.createUploadWidget();
     }
 
     loadShowData () {
         if (this.props.match.params.id && _.isEmpty(this.state.loadedShow)) {
-            // if ( !this.state.loadedShow || (this.state.loadedShow && this.state.loadedShow.id !== +this.props.match.params.id) ) {
                 axios.get( '/shows/' + this.props.match.params.id )
                     .then( response => {
                         this.setState({loadedShow: response.data});
@@ -44,6 +49,17 @@ class Show extends Component {
                         videos: response.data,
                         loadedVideos: true
                     });
+                });
+        }
+    }
+
+    loadPhotos() {
+        if ( this.props.match.params.id ) {
+            // axios.get("/photos/")
+            axios.get(`/photos_from_show/${this.props.match.params.id}`)
+                .then(res => {
+                    console.log(res)
+                    this.setState({photos: res.data.resources});
                 });
         }
     }
@@ -94,6 +110,20 @@ class Show extends Component {
         );
     }
 
+    openUploadWidget() {
+        window.cloudinary.openUploadWidget(
+            { 
+                cloud_name: 'gmg-archive-project', 
+                upload_preset: 'basic-photo', 
+                tags: [this.state.loadedShow.id] 
+            }, 
+            function(error, result) {
+                if (result.event === "success") {
+                    this.setState({photos: [result.info, ...this.state.photos]});
+                }
+            }.bind(this));
+    }
+
     render() {
         let show = <p style={{ textAlign: 'center' }}>Please select a Show!</p>;
         if ( this.props.match.params.id ) {
@@ -135,6 +165,32 @@ class Show extends Component {
                         </Link>
                         <AddMediaDialog handleSubmit={this.handleSubmit.bind(this)}/>
                         {/* <DeleteButton history={this.props.history} id={this.props.match.params.id} /> */}
+                        <Button onClick={this.openUploadWidget.bind(this)}>Upload Photo</Button>
+                    </div>
+                    <div className="gallery">
+                        <CloudinaryContext cloudName="gmg-archive-project">
+                            {
+                                this.state.photos.map(data => {
+                                    return (
+                                        <div className="responsive" key={data.public_id}>
+                                            <a target="_blank" href={`https://res.cloudinary.com/gmg-archive-project/image/upload/${data.public_id}.jpg`}>
+                                                <Image publicId={data.public_id}>
+                                                    <Transformation
+                                                        crop="scale"
+                                                        // width="300"
+                                                        height="200"
+                                                        dpr="auto"
+                                                        responsive_placeholder="blank"
+                                                    />
+                                                </Image>
+                                            </a>
+                                            {/* <div className="desc">Created at {data.created_at}</div> */}
+                                        </div>
+                                    )
+                                })
+                            }
+                        </CloudinaryContext>
+                        <div className="clearfix"></div>
                     </div>
                     <div className="videos">
                         {videos.map( (video, i) => 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from '../../../axios';
 import { Link } from 'react-router-dom';
-import { Card, Dropdown } from 'semantic-ui-react';
+import { Card, Dropdown, Form } from 'semantic-ui-react';
 import _ from 'lodash';
 
 import './ShowsList.scss';
@@ -113,21 +113,25 @@ class ShowsList extends Component {
             <div>
                 <section className="ShowsList">
                     <div className="filters">
-                        <FilterDropdown
-                            placeholder="Year"
-                            onClick={this.getYears.bind(this)}
-                            options={this.state.yearsList}
-                            onChange={this.filterYear.bind(this)}/>
-                        <FilterDropdown
-                            placeholder="Venue"
-                            onClick={this.getVenues.bind(this)}
-                            options={this.state.venuesList}
-                            onChange={this.filterVenue.bind(this)}/>
-                        <Dropdown
-                            placeholder="Sort"
-                            selection
-                            options={sortOptions}
-                            onChange={this.sort.bind(this)}/>
+                        <Form>
+                            <Form.Group widths="equal">
+                                <FilterDropdown
+                                    placeholder="Year"
+                                    onClick={this.getYears.bind(this)}
+                                    options={this.state.yearsList}
+                                    onChange={this.filterYear.bind(this)}/>
+                                <FilterDropdown
+                                    placeholder="Venue"
+                                    onClick={this.getVenues.bind(this)}
+                                    options={this.state.venuesList}
+                                    onChange={this.filterVenue.bind(this)}/>
+                                <Form.Select
+                                    placeholder="Sort"
+                                    selection
+                                    options={sortOptions}
+                                    onChange={this.sort.bind(this)}/>
+                            </Form.Group>
+                        </Form>
                     </div>
                     <div className="cards">
                         <Card.Group>{showCards}</Card.Group>

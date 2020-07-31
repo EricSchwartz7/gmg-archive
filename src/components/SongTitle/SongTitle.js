@@ -7,14 +7,17 @@ const SongTitle = function(props) {
     const addComma = props.vertical ? "" : ", ";
 
     return (
-        <span className="SongTitle">{props.song.title}
-            {props.last ? "" : addComma}
-            &nbsp;
+        <span className="SongTitle">
             {props.vertical ? 
                 <Button 
-                    icon
+                    icon="delete"
+                    // circular
                     onClick={props.deleteSong.bind(this, props)}
-                >X</Button> : ""}
+                ></Button> : ""}
+            &nbsp;
+            {props.song.title}
+            {props.last ? "" : addComma}
+
         </span>
     )
 }

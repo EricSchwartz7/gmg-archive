@@ -8,7 +8,8 @@ import './Stats.scss';
 class Stats extends Component {
     state = {
         statSelected: "",
-        currentStatArray: []
+        currentStatArray: [],
+        loading: false
         // times_played_list: [],
         // percentage_played_list: [],
         // first_set_openers: [],
@@ -92,10 +93,14 @@ class Stats extends Component {
     // }
 
     handleSelectStat(e, valueObj) {
+        this.setState({
+            loading: true
+        });
         const selectedObj = valueObj.options.find(option => option.value === valueObj.value);
         axios.get(selectedObj.path).then(response => {
             this.setState({
-                currentStatArray: response.data
+                currentStatArray: response.data,
+                loading: false
             });
         });
         this.setState({
@@ -156,85 +161,29 @@ class Stats extends Component {
             return this.state.statSelected.value === "showPercentage"
         }
 
+        let songList;
+
+        if (this.state.loading) {
+            songList = <div>Loading...</div>
+        } else {
+            songList = this.state.currentStatArray.map((song, i) => {
+                return <div className="single-song" key={i}>
+                    <Link to={"/song/" + song.id}>{song.title}</Link> - {song.value}{showPercentSign() ? "%" : ""}
+                </div>
+            });
+        }
+            
         return (
             <section className="Stats">
                 <h1>Statistics</h1>
                 <div className="statistics">
                     {selectStatDropdown()}
                     <div className="song-list">
-                        {/* <h3>{this.state.statSelected.text}</h3> */}
-                        {this.state.currentStatArray.map((song, i) => {
-                            return <div className="single-song" key={i}>
-                                <Link to={"/song/" + song.id}>{song.title}</Link> - {showPercentSign() ? "%" : ""}{song.value}
-                            </div>
-                        })}
+                        {songList}
                     </div>
-
-                    {/* <div className="column">
-                        <h3>Times Played</h3>
-                        {this.state.times_played_list.map((song, i) => {
-                            return <div key={i}>
-                                <Link to={"/song/" + song.id}>{song.title}</Link> - {song.times_played}
-                            </div>
-                        })}
-                    </div>
-
-                    <div className="column">
-                        <h3>Percentage of Shows</h3>
-                        {this.state.percentage_played_list.map((song, i) => {
-                            return <div key={i}>
-                                <Link to={"/song/" + song.id}>{song.title}</Link> - %{song.percentage_played}
-                            </div>
-                        })}
-                    </div>
-
-                    <div className="column">
-                        <h3>First Set Openers</h3>
-                        {this.state.first_set_openers.map((song, i) => {
-                            return <div key={i}>
-                                <Link to={"/song/" + song.id}>{song.title}</Link> - {song.set_opener_count}
-                            </div>
-                        })}
-                    </div>
-
-                    <div className="column">
-                        <h3>Second Set Openers</h3>
-                        {this.state.second_set_openers.map((song, i) => {
-                            return <div key={i}>
-                                <Link to={"/song/" + song.id}>{song.title}</Link> - {song.set_opener_count}
-                            </div>
-                        })}
-                    </div>
-
-                    <div className="column">
-                        <h3>First Set Closers</h3>
-                        {this.state.first_set_closers.map((song, i) => {
-                            return <div key={i}>
-                                <Link to={"/song/" + song.id}>{song.title}</Link> - {song.set_closer_count}
-                            </div>
-                        })}
-                    </div>
-
-                    <div className="column">
-                        <h3>Second Set Closers</h3>
-                        {this.state.second_set_closers.map((song, i) => {
-                            return <div key={i}>
-                                <Link to={"/song/" + song.id}>{song.title}</Link> - {song.set_closer_count}
-                            </div>
-                        })}
-                    </div>
-
-                    <div className="column">
-                        <h3>Encore Appearances</h3>
-                        {this.state.encore_appearances.map((song, i) => {
-                            return <div key={i}>
-                                <Link to={"/song/" + song.id}>{song.title}</Link> - {song.encore_appearances}
-                            </div>
-                        })}
-                    </div> */}
                 </div>
             </section>
-        );        
+        );
     }
 
 }

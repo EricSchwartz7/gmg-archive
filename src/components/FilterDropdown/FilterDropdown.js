@@ -1,15 +1,16 @@
 import React from 'react';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown, Form } from 'semantic-ui-react';
 
 const FilterDropdown = (props) =>
-    <Dropdown
-        icon="filter"
-        labeled
-        selection
+    <Form.Select
+        // icon="filter"
+        // fluid
+        // labeled
+        // selection
         clearable
-        floating
-        button
-        className="icon"
+        // floating
+        // button
+        // className="icon"
         placeholder={props.placeholder}
         onClick={props.onClick}
         options={props.options}
