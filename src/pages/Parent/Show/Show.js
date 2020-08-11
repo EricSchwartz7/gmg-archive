@@ -5,9 +5,10 @@ import { Link, useHistory } from 'react-router-dom';
 import DeleteButton from "components/DeleteButton/DeleteButton";
 import FormatHelper from "FormatHelper"
 import AddMediaDialog from "components/AddMediaDialog/AddMediaDialog"
-import {Image, Video, Transformation, CloudinaryContext} from 'cloudinary-react';
+import {Image, Video, Audio, Transformation, CloudinaryContext} from 'cloudinary-react';
 import {Cloudinary} from 'cloudinary-core';
 import _ from "lodash"
+import $ from "jquery";
 
 import './Show.scss';
 
@@ -17,6 +18,7 @@ class Show extends Component {
         loadedVideos: false,
         videos: [],
         photos: [],
+        audioRecs: [],
         uploadWidget: {},
         songsList: []
     }
@@ -26,6 +28,7 @@ class Show extends Component {
         this.loadVideos();
         this.getAllSongs();
         this.loadPhotos();
+        this.loadAudioRecs();
         // this.createUploadWidget();
     }
 
@@ -64,6 +67,16 @@ class Show extends Component {
         }
     }
 
+    loadAudioRecs() {
+        if ( this.props.match.params.id ) {
+            axios.get(`/audio_recs_from_show/${this.props.match.params.id}`)
+                .then(res => {
+                    console.log(res)
+                    this.setState({audioRecs: res.data.resources});
+                });
+        }
+    }
+
     getAllSongs() {
         axios.get("/songs")
             .then(response => {
@@ -95,12 +108,6 @@ class Show extends Component {
         }
     }
 
-    // deleteShow = () => {
-    //     axios.delete("/shows/" + this.props.match.params.id)
-    //     let history = useHistory();
-    //     history.push("/shows");
-    // }
-
     handleSubmit(videoData) {
         videoData.show_id = this.props.match.params.id;
         axios.post('/videos', videoData).then( (response) => 
@@ -110,18 +117,59 @@ class Show extends Component {
         );
     }
 
+    getApiKey() {
+
+    }
+
+    generateSignature(callback, params_to_sign) {
+        axios.post("/generate_signature/", params_to_sign).then( response => {
+            callback(response.data.signature);
+        })
+
+        // return $.ajax({
+        //     url     : "/api/v1/generate_signature/",
+        //     type    : "GET",
+        //     dataType: "text",
+        //     data    : { data: params_to_sign},
+        //     complete: function() {console.log("complete")},
+        //     success : function(signature, textStatus, xhr) { 
+        //         debugger;
+        //         callback(signature); 
+        //     },
+        //     error   : function(xhr, status, error) { console.log(xhr, status, error); }
+        // });
+    }
+
     openUploadWidget() {
         window.cloudinary.openUploadWidget(
             { 
                 cloud_name: 'gmg-archive-project', 
-                upload_preset: 'basic-photo', 
-                tags: [this.state.loadedShow.id] 
-            }, 
+                upload_preset: 'basic-photo',
+                apiKey: "119581295779122",
+                tags: [this.props.match.params.id],
+                uploadSignature: this.generateSignature
+            },
             function(error, result) {
                 if (result.event === "success") {
-                    this.setState({photos: [result.info, ...this.state.photos]});
+                    if (result.info.is_audio) {
+                        this.setState({audioRecs: [result.info, ...this.state.audioRecs]})
+                    } else {
+                        this.setState({photos: [result.info, ...this.state.photos]});
+                    }
                 }
             }.bind(this));
+    }
+
+    deletePhoto(publicID) {
+        const publicIDWithoutFolder = publicID.replace("gmg/", "");
+        axios.delete(`photos/${publicIDWithoutFolder}`).then(function(response) {
+            if (response.data.result === "ok") {
+                const photos = this.state.photos.filter(photo => photo.public_id !== response.data.public_id);
+                this.setState({
+                    photos: photos
+                });
+            }
+        }.bind(this));
     }
 
     render() {
@@ -169,26 +217,54 @@ class Show extends Component {
                     </div>
                     <div className="gallery">
                         <CloudinaryContext cloudName="gmg-archive-project">
-                            {
-                                this.state.photos.map(data => {
-                                    return (
-                                        <div className="responsive" key={data.public_id}>
-                                            <a target="_blank" href={`https://res.cloudinary.com/gmg-archive-project/image/upload/${data.public_id}.jpg`}>
-                                                <Image publicId={data.public_id}>
-                                                    <Transformation
-                                                        crop="scale"
-                                                        // width="300"
-                                                        height="200"
-                                                        dpr="auto"
-                                                        responsive_placeholder="blank"
-                                                    />
-                                                </Image>
-                                            </a>
-                                            {/* <div className="desc">Created at {data.created_at}</div> */}
-                                        </div>
-                                    )
-                                })
-                            }
+                            <div className="photos">
+                                {
+                                    this.state.photos.map(data => {
+                                        return (
+                                            <div className="responsive" key={data.public_id}>
+                                                <a target="_blank" href={`https://res.cloudinary.com/gmg-archive-project/image/upload/${data.public_id}.jpg`}>
+                                                    <Image publicId={data.public_id}>
+                                                        <Transformation
+                                                            crop="scale"
+                                                            // width="300"
+                                                            height="200"
+                                                            dpr="auto"
+                                                            responsive_placeholder="blank"
+                                                        />
+                                                    </Image>
+                                                </a>
+                                                <Button 
+                                                    icon="delete"
+                                                    onClick={this.deletePhoto.bind(this, data.public_id)}
+                                                ></Button>
+                                                {/* <div className="desc">Created at {data.created_at}</div> */}
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            <div className="audio-recs">
+                                {
+                                    this.state.audioRecs.map(data => {
+                                        return (
+                                            <div className="responsive" key={data.public_id}>
+                                                <Audio
+                                                    sourceTypes={['wav', 'mp3']}
+                                                    publicId={data.public_id}
+                                                    controls
+                                                    fallback="Cannot play audio"
+                                                    // sourceTransformation={{
+                                                    //     wav: {effect: "volume:30"},
+                                                    //     mp3: {effect: "volume:45"}
+                                                    // }}
+                                                    >
+                                                </Audio>
+                                                {/* <div className="desc">Created at {data.created_at}</div> */}
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
                         </CloudinaryContext>
                         <div className="clearfix"></div>
                     </div>
