@@ -27,9 +27,9 @@ class Show extends Component {
         this.loadShowData();
         this.loadVideos();
         this.getAllSongs();
-        this.loadPhotos();
-        this.loadAudioRecs();
-        // this.createUploadWidget();
+        // this.loadPhotos();
+        // this.loadAudioRecs();
+        this.loadMedia();
     }
 
     loadShowData () {
@@ -40,7 +40,6 @@ class Show extends Component {
                     }).catch( () => {
                         this.setState({loadedShow: "notfound"});
                     });
-            // }
         }
     }
 
@@ -56,23 +55,33 @@ class Show extends Component {
         }
     }
 
-    loadPhotos() {
+    // loadPhotos() {
+    //     if ( this.props.match.params.id ) {
+    //         // axios.get("/photos/")
+    //         axios.get(`/photos_from_show/${this.props.match.params.id}`)
+    //             .then(res => {
+    //                 console.log(res)
+    //                 this.setState({photos: res.data.resources});
+    //             });
+    //     }
+    // }
+
+    // loadAudioRecs() {
+    //     if ( this.props.match.params.id ) {
+    //         axios.get(`/audio_recs_from_show/${this.props.match.params.id}`)
+    //             .then(res => {
+    //                 console.log(res)
+    //                 this.setState({audioRecs: res.data.resources});
+    //             });
+    //     }
+    // }
+
+    loadMedia() {
         if ( this.props.match.params.id ) {
-            // axios.get("/photos/")
-            axios.get(`/photos_from_show/${this.props.match.params.id}`)
+            axios.get(`/media_items_from_show/${this.props.match.params.id}`)
                 .then(res => {
                     console.log(res)
                     this.setState({photos: res.data.resources});
-                });
-        }
-    }
-
-    loadAudioRecs() {
-        if ( this.props.match.params.id ) {
-            axios.get(`/audio_recs_from_show/${this.props.match.params.id}`)
-                .then(res => {
-                    console.log(res)
-                    this.setState({audioRecs: res.data.resources});
                 });
         }
     }
@@ -115,10 +124,6 @@ class Show extends Component {
                 videos: this.state.videos.concat(response.data)
             })
         );
-    }
-
-    getApiKey() {
-
     }
 
     generateSignature(callback, params_to_sign) {
