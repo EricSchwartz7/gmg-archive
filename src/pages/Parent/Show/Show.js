@@ -3,11 +3,12 @@ import axios from 'axios';
 import { Button, Embed, Card } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom';
 import DeleteButton from "components/DeleteButton/DeleteButton";
-import FormatHelper from "FormatHelper"
-import AddMediaDialog from "components/AddMediaDialog/AddMediaDialog"
+import FormatHelper from "FormatHelper";
+import AddMediaDialog from "components/AddMediaDialog/AddMediaDialog";
+import Photo from "components/Photo/Photo";
 import {Image, Video, Audio, Transformation, CloudinaryContext} from 'cloudinary-react';
 import {Cloudinary} from 'cloudinary-core';
-import _ from "lodash"
+import _ from "lodash";
 import $ from "jquery";
 
 import './Show.scss';
@@ -27,9 +28,8 @@ class Show extends Component {
         this.loadShowData();
         this.loadVideos();
         this.getAllSongs();
-        // this.loadPhotos();
-        // this.loadAudioRecs();
-        this.loadMedia();
+        this.loadPhotos();
+        this.loadAudioRecs();
     }
 
     loadShowData () {
@@ -55,33 +55,22 @@ class Show extends Component {
         }
     }
 
-    // loadPhotos() {
-    //     if ( this.props.match.params.id ) {
-    //         // axios.get("/photos/")
-    //         axios.get(`/photos_from_show/${this.props.match.params.id}`)
-    //             .then(res => {
-    //                 console.log(res)
-    //                 this.setState({photos: res.data.resources});
-    //             });
-    //     }
-    // }
-
-    // loadAudioRecs() {
-    //     if ( this.props.match.params.id ) {
-    //         axios.get(`/audio_recs_from_show/${this.props.match.params.id}`)
-    //             .then(res => {
-    //                 console.log(res)
-    //                 this.setState({audioRecs: res.data.resources});
-    //             });
-    //     }
-    // }
-
-    loadMedia() {
+    loadPhotos() {
         if ( this.props.match.params.id ) {
-            axios.get(`/media_items_from_show/${this.props.match.params.id}`)
+            axios.get(`/photos_from_show/${this.props.match.params.id}`)
                 .then(res => {
                     console.log(res)
                     this.setState({photos: res.data.resources});
+                });
+        }
+    }
+
+    loadAudioRecs() {
+        if ( this.props.match.params.id ) {
+            axios.get(`/audio_recs_from_show/${this.props.match.params.id}`)
+                .then(res => {
+                    console.log(res)
+                    this.setState({audioRecs: res.data.resources});
                 });
         }
     }
@@ -165,9 +154,9 @@ class Show extends Component {
             }.bind(this));
     }
 
-    deletePhoto(publicID) {
+    deleteMediaItem(publicID) {
         const publicIDWithoutFolder = publicID.replace("gmg/", "");
-        axios.delete(`photos/${publicIDWithoutFolder}`).then(function(response) {
+        axios.delete(`media_items/${publicIDWithoutFolder}`).then(function(response) {
             if (response.data.result === "ok") {
                 const photos = this.state.photos.filter(photo => photo.public_id !== response.data.public_id);
                 this.setState({
@@ -224,30 +213,19 @@ class Show extends Component {
                         <CloudinaryContext cloudName="gmg-archive-project">
                             <div className="photos">
                                 {
-                                    this.state.photos.map(data => {
+                                    this.state.photos.map((data, i) => {
                                         return (
-                                            <div className="responsive" key={data.public_id}>
-                                                <a target="_blank" href={`https://res.cloudinary.com/gmg-archive-project/image/upload/${data.public_id}.jpg`}>
-                                                    <Image publicId={data.public_id}>
-                                                        <Transformation
-                                                            crop="scale"
-                                                            // width="300"
-                                                            height="200"
-                                                            dpr="auto"
-                                                            responsive_placeholder="blank"
-                                                        />
-                                                    </Image>
-                                                </a>
-                                                <Button 
-                                                    icon="delete"
-                                                    onClick={this.deletePhoto.bind(this, data.public_id)}
-                                                ></Button>
-                                                {/* <div className="desc">Created at {data.created_at}</div> */}
-                                            </div>
+                                            <Photo
+                                                key={i}
+                                                createdAt={data.created_at}
+                                                publicID={data.public_id}
+                                                deleteMediaItem={this.deleteMediaItem.bind(this, data.public_id)}
+                                            />
                                         )
                                     })
                                 }
                             </div>
+                            {/* </Card.Group> */}
                             <div className="audio-recs">
                                 {
                                     this.state.audioRecs.map(data => {
