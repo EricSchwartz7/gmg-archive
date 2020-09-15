@@ -1,8 +1,11 @@
 .SongsList {
-    justify-content: center;
-    margin: auto;
-}
-
-.songs {
-    margin: 12px auto;
+    text-align: center;
+    
+    .songs {
+        font-size: 20px;
+    }
+    
+    .song {
+        margin-top: 8px;
+    }
 }

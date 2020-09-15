@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Divider } from 'semantic-ui-react';
 import {Image, Transformation} from 'cloudinary-react';
+import moment from 'moment';
 import "./Photo.scss";
 
 const Photo = (props) =>
@@ -16,11 +17,11 @@ const Photo = (props) =>
                 />
             </Image>
         </a>
-        <Button className="button-overlay"
+        <Button className="overlay button"
             icon="delete"
             onClick={props.deleteMediaItem}
         ></Button>
-        <div className="desc">Created at {props.createdAt}</div>
+        <div className="overlay info">Uploaded {moment(props.createdAt).format('MM/DD/YY, h:mm a')}</div>
     </div>
 
 export default Photo;

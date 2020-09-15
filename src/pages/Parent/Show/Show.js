@@ -20,7 +20,6 @@ class Show extends Component {
         videos: [],
         photos: [],
         audioRecs: [],
-        uploadWidget: {},
         songsList: []
     }
 
@@ -119,26 +118,14 @@ class Show extends Component {
         axios.post("/generate_signature/", params_to_sign).then( response => {
             callback(response.data.signature);
         })
-
-        // return $.ajax({
-        //     url     : "/api/v1/generate_signature/",
-        //     type    : "GET",
-        //     dataType: "text",
-        //     data    : { data: params_to_sign},
-        //     complete: function() {console.log("complete")},
-        //     success : function(signature, textStatus, xhr) { 
-        //         debugger;
-        //         callback(signature); 
-        //     },
-        //     error   : function(xhr, status, error) { console.log(xhr, status, error); }
-        // });
     }
 
     openUploadWidget() {
         window.cloudinary.openUploadWidget(
             { 
-                cloud_name: 'gmg-archive-project', 
-                upload_preset: 'basic-photo',
+                cloud_name: "gmg-archive-project",
+                sources: ["local", "url", "facebook", "instagram", "google_drive", "dropbox"], 
+                upload_preset: "basic-photo",
                 apiKey: "119581295779122",
                 tags: [this.props.match.params.id],
                 uploadSignature: this.generateSignature

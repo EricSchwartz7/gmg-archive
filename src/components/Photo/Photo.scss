@@ -10,22 +10,28 @@
     height: auto;
 }
 
-.button-overlay {
+.overlay {
     position: absolute; 
-    top: 2px;
-    right: 0;
     background: rgb(0, 0, 0);
     background: rgba(0, 0, 0, 0.5); /* Black see-through */
-    color: #f1f1f1; 
-    // width: 100%;
-    transition: .5s ease;
     opacity:0;
+    color: #f1f1f1;
+    transition: .5s ease;
     color: white;
-    // font-size: 20px;
-    // padding: 20px;
-    // text-align: center;
 }
-  
-.photo-container:hover .button-overlay {
+
+.button {
+    top: 2px;
+    right: 0;
+}
+
+.info {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.photo-container:hover .overlay {
     opacity: 0.7;
 }
