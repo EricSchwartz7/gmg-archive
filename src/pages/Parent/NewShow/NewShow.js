@@ -31,7 +31,6 @@ class NewShow extends Component {
         if ( this.props.match.params.id ) {
             axios.get( '/shows/' + this.props.match.params.id )
                 .then( response => {
-                    console.log(response);
                     this.setState({
                         showData: response.data
                     });

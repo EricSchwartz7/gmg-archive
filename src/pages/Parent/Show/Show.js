@@ -24,6 +24,7 @@ class Show extends Component {
     }
 
     componentDidMount() {
+        this.showID = this.props.match.params.id;
         this.loadShowData();
         this.loadVideos();
         this.getAllSongs();
@@ -32,8 +33,8 @@ class Show extends Component {
     }
 
     loadShowData () {
-        if (this.props.match.params.id && _.isEmpty(this.state.loadedShow)) {
-                axios.get( '/shows/' + this.props.match.params.id )
+        if (this.showID && _.isEmpty(this.state.loadedShow)) {
+                axios.get( '/shows/' + this.showID )
                     .then( response => {
                         this.setState({loadedShow: response.data});
                     }).catch( () => {
@@ -43,8 +44,8 @@ class Show extends Component {
     }
 
     loadVideos() {
-        if ( this.props.match.params.id ) {
-            axios.get("/get_videos/" + this.props.match.params.id)
+        if ( this.showID ) {
+            axios.get("/get_videos/" + this.showID)
                 .then( (response) => {
                     this.setState({
                         videos: response.data,
@@ -55,20 +56,18 @@ class Show extends Component {
     }
 
     loadPhotos() {
-        if ( this.props.match.params.id ) {
-            axios.get(`/photos_from_show/${this.props.match.params.id}`)
+        if ( this.showID ) {
+            axios.get(`/photos_from_show/${this.showID}`)
                 .then(res => {
-                    console.log(res)
                     this.setState({photos: res.data.resources});
                 });
         }
     }
 
     loadAudioRecs() {
-        if ( this.props.match.params.id ) {
-            axios.get(`/audio_recs_from_show/${this.props.match.params.id}`)
+        if ( this.showID ) {
+            axios.get(`/audio_recs_from_show/${this.showID}`)
                 .then(res => {
-                    console.log(res)
                     this.setState({audioRecs: res.data.resources});
                 });
         }
@@ -106,7 +105,7 @@ class Show extends Component {
     }
 
     handleSubmit(videoData) {
-        videoData.show_id = this.props.match.params.id;
+        videoData.show_id = this.showID;
         axios.post('/videos', videoData).then( (response) => 
             this.setState({
                 videos: this.state.videos.concat(response.data)
@@ -115,7 +114,7 @@ class Show extends Component {
     }
 
     generateSignature(callback, params_to_sign) {
-        axios.post("/generate_signature/", params_to_sign).then( response => {
+        axios.post("/generate_signature", params_to_sign).then( response => {
             callback(response.data.signature);
         })
     }
@@ -127,7 +126,7 @@ class Show extends Component {
                 sources: ["local", "url", "facebook", "instagram", "google_drive", "dropbox"], 
                 upload_preset: "basic-photo",
                 apiKey: "119581295779122",
-                tags: [this.props.match.params.id],
+                tags: [this.showID],
                 uploadSignature: this.generateSignature
             },
             function(error, result) {
@@ -137,6 +136,12 @@ class Show extends Component {
                     } else {
                         this.setState({photos: [result.info, ...this.state.photos]});
                     }
+                    const media_payload = {
+                        public_id: result.info.public_id,
+                        show_id: this.showID,
+                        media_type: result.info.resource_type
+                    };
+                    axios.post("/media_items", media_payload);
                 }
             }.bind(this));
     }
@@ -155,8 +160,8 @@ class Show extends Component {
 
     render() {
         let show = <p style={{ textAlign: 'center' }}>Please select a Show!</p>;
-        if ( this.props.match.params.id ) {
-            show = <p style={{ textAlign: 'center' }}>Loading show #{this.props.match.params.id}...</p>;
+        if ( this.showID ) {
+            show = <p style={{ textAlign: 'center' }}>Loading show #{this.showID}...</p>;
         }
         if (this.state.loadedShow === "notfound") {
             show = (
@@ -189,12 +194,12 @@ class Show extends Component {
                     {secondSet ? (<p><span className="set-title">SET 2: </span>{secondSet}</p>) : null}
                     {encore ? (<p><span className="set-title">ENCORE: </span>{encore}</p>) : null}
                     <div className="button-group">
-                        <Link to={'/upload/' + this.props.match.params.id}>        
+                        <Link to={'/upload/' + this.showID}>        
                             <Button>Edit</Button>
                         </Link>
                         <AddMediaDialog handleSubmit={this.handleSubmit.bind(this)}/>
-                        {/* <DeleteButton history={this.props.history} id={this.props.match.params.id} /> */}
-                        <Button onClick={this.openUploadWidget.bind(this)}>Upload Photo</Button>
+                        {/* <DeleteButton history={this.props.history} id={this.showID} /> */}
+                        <Button onClick={this.openUploadWidget.bind(this)}>Upload Media</Button>
                     </div>
                     <div className="gallery">
                         <CloudinaryContext cloudName="gmg-archive-project">
