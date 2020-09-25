@@ -7,11 +7,11 @@ import './SongsList.scss';
 class SongsList extends Component {
     state = {
         songs: [],
-        filterAndSort: {
-            year_filter: "",
-            venue_filter: "",
-            sort_order: "most_recent"
-        }
+        // filterAndSort: {
+        //     year_filter: "",
+        //     venue_filter: "",
+        //     sort_order: "most_recent"
+        // }
     }
     
     componentDidMount() {
@@ -19,11 +19,11 @@ class SongsList extends Component {
     }
 
     sortFilterFetch(params) {
-        axios.post("/filtered_songs", params)
+        axios.get("/songs")
             .then(response => {
                 this.setState({
                     songs: response.data,
-                    filterAndSort: {...params}
+                    // filterAndSort: {...params}
                 });
                 console.log(response.data)
             })

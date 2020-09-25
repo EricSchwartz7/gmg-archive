@@ -23,12 +23,12 @@ class Parent extends Component {
                             <li><NavLink
                                 to="/shows/"
                                 >Shows</NavLink></li>
-                            <li><NavLink
+                            {/* <li><NavLink
                                 to="/bps/"
                                 >Band Practices</NavLink></li>
                             <li><NavLink
                                 to="/studio/"
-                                >Studio Recordings</NavLink></li>
+                                >Studio Recordings</NavLink></li> */}
                             <li><NavLink
                                 to="/stats/"
                                 >Stats</NavLink></li>

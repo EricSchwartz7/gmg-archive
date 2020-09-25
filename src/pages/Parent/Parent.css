@@ -8,7 +8,8 @@
 
 .Parent li {
     display: inline-block;
-    margin: 20px;
+    margin: 30px;
+    font-size: 1.3em;
 }
 
 .Parent a {

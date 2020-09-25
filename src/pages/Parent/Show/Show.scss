@@ -42,4 +42,26 @@
             margin: 5px;
         }
     }
+
+    .card {
+        color: orange;
+        background-color: orange;
+    }
+
+    .audio-card {
+        // display: flex;
+        text-align: center;
+
+        img {
+            width: 100%;
+        }
+
+        .content {
+            width: 100%;
+        }
+
+        audio {
+            width: 100%;
+        }
+    }
 }

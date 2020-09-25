@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button, Embed, Card } from 'semantic-ui-react'
+import { Button, Embed, Card, Label } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom';
 import DeleteButton from "components/DeleteButton/DeleteButton";
 import FormatHelper from "FormatHelper";
@@ -222,18 +222,26 @@ class Show extends Component {
                                 {
                                     this.state.audioRecs.map(data => {
                                         return (
-                                            <div className="responsive" key={data.public_id}>
-                                                <Audio
-                                                    sourceTypes={['wav', 'mp3']}
-                                                    publicId={data.public_id}
-                                                    controls
-                                                    fallback="Cannot play audio"
-                                                    // sourceTransformation={{
-                                                    //     wav: {effect: "volume:30"},
-                                                    //     mp3: {effect: "volume:45"}
-                                                    // }}
-                                                    >
-                                                </Audio>
+                                            <div key={data.public_id}>
+                                                <Card className="audio-card" color="orange">
+                                                    <Image 
+                                                        publicId={data.public_id+".png"} 
+                                                        resourceType="video" 
+                                                        height="100" 
+                                                        width="250" 
+                                                        flags="waveform"/>
+                                                    <Card.Content>
+                                                        <Card.Header className="audio-card">Take Me Away</Card.Header>
+                                                        {/* <Card.Description> */}
+                                                            <Audio
+                                                                sourceTypes={['wav', 'mp3']}
+                                                                publicId={data.public_id}
+                                                                controls
+                                                                fallback="Cannot play audio"/>
+                                                        {/* </Card.Description> */}
+                                                    </Card.Content>
+                                                </Card>
+
                                                 {/* <div className="desc">Created at {data.created_at}</div> */}
                                             </div>
                                         )
