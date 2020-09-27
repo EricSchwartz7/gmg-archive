@@ -6,6 +6,7 @@ import DeleteButton from "components/DeleteButton/DeleteButton";
 import FormatHelper from "FormatHelper";
 import AddMediaDialog from "components/AddMediaDialog/AddMediaDialog";
 import Photo from "components/Photo/Photo";
+import MusicPlayer from "components/MusicPlayer/MusicPlayer";
 import {Image, Video, Audio, Transformation, CloudinaryContext} from 'cloudinary-react';
 import {Cloudinary} from 'cloudinary-core';
 import _ from "lodash";
@@ -20,7 +21,8 @@ class Show extends Component {
         videos: [],
         photos: [],
         audioRecs: [],
-        songsList: []
+        songsList: [],
+        nowPlaying: ""
     }
 
     componentDidMount() {
@@ -158,6 +160,12 @@ class Show extends Component {
         }.bind(this));
     }
 
+    playSong(publicID) {
+        this.setState({
+            nowPlaying: publicID
+        });
+    }
+
     render() {
         let show = <p style={{ textAlign: 'center' }}>Please select a Show!</p>;
         if ( this.showID ) {
@@ -217,27 +225,28 @@ class Show extends Component {
                                     })
                                 }
                             </div>
+                            <MusicPlayer 
+                                nowPlaying={this.state.nowPlaying}
+                            />
                             {/* </Card.Group> */}
                             <div className="audio-recs">
                                 {
                                     this.state.audioRecs.map(data => {
                                         return (
                                             <div key={data.public_id}>
-                                                <Card className="audio-card" color="orange">
+                                                <Card className="audio-card" color="orange" onClick={this.playSong.bind(this, data.public_id)}>
                                                     <Image 
                                                         publicId={data.public_id+".png"} 
                                                         resourceType="video" 
                                                         height="100" 
                                                         width="250" 
-                                                        flags="waveform"/>
+                                                        flags="waveform"
+                                                        color="white"
+                                                        background="black"/>
                                                     <Card.Content>
-                                                        <Card.Header className="audio-card">Take Me Away</Card.Header>
+                                                        <Card.Header className="audio-card">Song Title</Card.Header>
                                                         {/* <Card.Description> */}
-                                                            <Audio
-                                                                sourceTypes={['wav', 'mp3']}
-                                                                publicId={data.public_id}
-                                                                controls
-                                                                fallback="Cannot play audio"/>
+
                                                         {/* </Card.Description> */}
                                                     </Card.Content>
                                                 </Card>
