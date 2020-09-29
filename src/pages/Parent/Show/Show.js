@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button, Embed, Icon, Card, Label } from 'semantic-ui-react'
+import { Button, Embed} from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom';
-import DeleteButton from "components/DeleteButton/DeleteButton";
-import FormatHelper from "FormatHelper";
 import AddMediaDialog from "components/AddMediaDialog/AddMediaDialog";
 import Photo from "components/Photo/Photo";
 import MusicPlayer from "components/MusicPlayer/MusicPlayer";
 import AudioRec from "components/AudioRec/AudioRec";
-import {Image, Video, Audio, Transformation, CloudinaryContext} from 'cloudinary-react';
-import {Cloudinary} from 'cloudinary-core';
+import {CloudinaryContext} from 'cloudinary-react';
 import _ from "lodash";
-import $ from "jquery";
 
 import './Show.scss';
 
@@ -23,7 +19,10 @@ class Show extends Component {
         photos: [],
         audioRecs: [],
         songsList: [],
-        nowPlaying: ""
+        musicPlayer: {
+            publicID: "",
+            title: ""
+        }
     }
 
     componentDidMount() {
@@ -71,7 +70,7 @@ class Show extends Component {
         if ( this.showID ) {
             axios.get(`/audio_recs_from_show/${this.showID}`)
                 .then(res => {
-                    this.setState({audioRecs: res.data.resources});
+                    this.setState({audioRecs: res.data});
                 });
         }
     }
@@ -139,10 +138,11 @@ class Show extends Component {
                     } else {
                         this.setState({photos: [result.info, ...this.state.photos]});
                     }
+                    const mediaType = result.info.is_audio ? "audio" : result.info.resource_type;
                     const media_payload = {
                         public_id: result.info.public_id,
                         show_id: this.showID,
-                        media_type: result.info.resource_type
+                        media_type: mediaType
                     };
                     axios.post("/media_items", media_payload);
                 }
@@ -161,14 +161,13 @@ class Show extends Component {
         }.bind(this));
     }
 
-    playSong(publicID) {
+    playSong(publicID, title) {
         this.setState({
-            nowPlaying: publicID
+            musicPlayer: {
+                publicID: publicID,
+                title: title
+            }
         });
-    }
-    
-    editTitle(publicID) {
-        
     }
 
     render() {
@@ -233,16 +232,18 @@ class Show extends Component {
                             {/* </Card.Group> */}
                             <div className="audio-recs">
                                 <MusicPlayer 
-                                    publicID={this.state.nowPlaying}
+                                    publicID={this.state.musicPlayer.publicID}
+                                    title={this.state.musicPlayer.title}
                                 />
                                 {this.state.audioRecs.map(data => {
                                     return (
                                         <div>
-                                            <div key={data.public_id}>
+                                            <div key={data.id}>
                                                 <AudioRec
+                                                    id={data.id}
                                                     publicID={data.public_id}
-                                                    playSong={this.playSong.bind(this, data.public_id)}
-                                                    editTitle={this.editTitle.bind(this, data.public_id)} />
+                                                    title={data.title}
+                                                    playSong={this.playSong.bind(this, data.public_id, data.title)} />
                                             </div>
                                         </div>
 

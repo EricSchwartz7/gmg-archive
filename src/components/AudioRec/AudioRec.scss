@@ -1,0 +1,11 @@
+.AudioRec {
+    &:hover {
+        i {
+            visibility: visible;
+        }
+    }
+    i {
+        visibility: hidden;
+        cursor: pointer;
+    }
+}
