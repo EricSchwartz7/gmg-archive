@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button, Embed, Card, Label } from 'semantic-ui-react'
+import { Button, Embed, Icon, Card, Label } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom';
 import DeleteButton from "components/DeleteButton/DeleteButton";
 import FormatHelper from "FormatHelper";
 import AddMediaDialog from "components/AddMediaDialog/AddMediaDialog";
 import Photo from "components/Photo/Photo";
 import MusicPlayer from "components/MusicPlayer/MusicPlayer";
+import AudioRec from "components/AudioRec/AudioRec";
 import {Image, Video, Audio, Transformation, CloudinaryContext} from 'cloudinary-react';
 import {Cloudinary} from 'cloudinary-core';
 import _ from "lodash";
@@ -165,6 +166,10 @@ class Show extends Component {
             nowPlaying: publicID
         });
     }
+    
+    editTitle(publicID) {
+        
+    }
 
     render() {
         let show = <p style={{ textAlign: 'center' }}>Please select a Show!</p>;
@@ -225,37 +230,24 @@ class Show extends Component {
                                     })
                                 }
                             </div>
-                            <MusicPlayer 
-                                nowPlaying={this.state.nowPlaying}
-                            />
                             {/* </Card.Group> */}
                             <div className="audio-recs">
-                                {
-                                    this.state.audioRecs.map(data => {
-                                        return (
+                                <MusicPlayer 
+                                    publicID={this.state.nowPlaying}
+                                />
+                                {this.state.audioRecs.map(data => {
+                                    return (
+                                        <div>
                                             <div key={data.public_id}>
-                                                <Card className="audio-card" color="orange" onClick={this.playSong.bind(this, data.public_id)}>
-                                                    <Image 
-                                                        publicId={data.public_id+".png"} 
-                                                        resourceType="video" 
-                                                        height="100" 
-                                                        width="250" 
-                                                        flags="waveform"
-                                                        color="white"
-                                                        background="black"/>
-                                                    <Card.Content>
-                                                        <Card.Header className="audio-card">Song Title</Card.Header>
-                                                        {/* <Card.Description> */}
-
-                                                        {/* </Card.Description> */}
-                                                    </Card.Content>
-                                                </Card>
-
-                                                {/* <div className="desc">Created at {data.created_at}</div> */}
+                                                <AudioRec
+                                                    publicID={data.public_id}
+                                                    playSong={this.playSong.bind(this, data.public_id)}
+                                                    editTitle={this.editTitle.bind(this, data.public_id)} />
                                             </div>
-                                        )
-                                    })
-                                }
+                                        </div>
+
+                                    )
+                                })}
                             </div>
                         </CloudinaryContext>
                         <div className="clearfix"></div>
@@ -285,3 +277,23 @@ class Show extends Component {
 }
 
 export default Show;
+
+
+{/* <Card className="audio-card" color="orange" onClick={this.playSong.bind(this, data.public_id)}> */}
+    {/* <Image 
+        publicId={data.public_id+".png"} 
+        resourceType="video" 
+        height="100" 
+        width="250" 
+        flags="waveform"
+        color="white"
+        background="black"/> */}
+    {/* <Card.Content> */}
+        {/* <Card.Header className="audio-card">Song Title</Card.Header> */}
+        {/* <Card.Description> */}
+
+        {/* </Card.Description> */}
+    {/* </Card.Content> */}
+{/* </Card> */}
+
+{/* <div className="desc">Created at {data.created_at}</div> */}

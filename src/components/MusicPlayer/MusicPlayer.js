@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import {Audio} from 'cloudinary-react';
+import {Icon} from 'semantic-ui-react';
+import _ from 'lodash';
 
 class MusicPlayer extends Component {
 
     state = {
-        nowPlaying: "",
-        loadingSong: false
+        publicID: "",
+        loadingSong: false,
+        title: ""
     }
 
     componentDidMount() {
@@ -17,22 +20,17 @@ class MusicPlayer extends Component {
         });
     }
 
-    shouldComponentUpdate(prevProps) {
-        // let shouldUpdate = false;
-        if (this.props.nowPlaying !== prevProps.nowPlaying) {
+    shouldComponentUpdate(nextProps) {
+        if (this.props.publicID !== nextProps.publicID) {
             this.setState({
-                nowPlaying: this.props.nowPlaying,
+                publicID: nextProps.publicID,
+                title: nextProps.title,
                 loadingSong: true
             });
             this.load();
-            // shouldUpdate = true;
         }
         return true;
     }
-
-    // componentDidUpdate() {
-    //     debugger;
-    // }
 
     load() {
         const player = document.getElementById('player');
@@ -54,16 +52,17 @@ class MusicPlayer extends Component {
     render() {
         let songTitle = <p>Select a song</p>;
         if (this.state.loadingSong) {
-            songTitle = `Loading ${this.state.nowPlaying}`;
-        } else if (this.state.nowPlaying) {
-            songTitle = <p>Public ID: {this.state.nowPlaying}</p>;
+            songTitle = <Icon loading name="spinner" size="big" />
+            this.load();
+        } else if (this.state.publicID) {
+            songTitle = <p>Now Playing: {this.state.title}</p>;
         }
         let player =
             <Audio 
                 id="player"
                 sourceTypes={['wav', 'mp3']}
-                controls={!this.state.loadingSong && !!this.state.nowPlaying}
-                publicId={this.state.nowPlaying}
+                controls={!this.state.loadingSong && !_.isEmpty(this.state.publicID)}
+                publicId={this.state.publicID}
                 fallback="Cannot play audio"/>
 
         return <div>

@@ -4,3 +4,7 @@ body {
   font-family: sans-serif;
   background-color: lightgrey !important;
 }
+
+a {
+  cursor: pointer;
+}
