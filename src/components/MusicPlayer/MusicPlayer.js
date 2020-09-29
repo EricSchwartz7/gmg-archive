@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Audio} from 'cloudinary-react';
 import {Icon} from 'semantic-ui-react';
 import _ from 'lodash';
+import "./MusicPlayer.scss"
 
 class MusicPlayer extends Component {
 
@@ -50,7 +51,7 @@ class MusicPlayer extends Component {
     }
     
     render() {
-        let songTitle = <p>Select a song</p>;
+        let songTitle;
         if (this.state.loadingSong) {
             songTitle = <Icon loading name="spinner" size="big" />
             this.load();

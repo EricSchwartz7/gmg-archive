@@ -237,15 +237,12 @@ class Show extends Component {
                                 />
                                 {this.state.audioRecs.map(data => {
                                     return (
-                                        <div>
-                                            <div key={data.id}>
-                                                <AudioRec
-                                                    id={data.id}
-                                                    publicID={data.public_id}
-                                                    title={data.title}
-                                                    playSong={this.playSong.bind(this, data.public_id, data.title)} />
-                                            </div>
-                                        </div>
+                                        <AudioRec
+                                            key={data.id}
+                                            id={data.id}
+                                            publicID={data.public_id}
+                                            title={data.title}
+                                            playSong={this.playSong.bind(this, data.public_id, data.title)} />
 
                                     )
                                 })}
