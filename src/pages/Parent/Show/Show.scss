@@ -66,9 +66,24 @@
     }
 
     .audio-recs {
+        font-size: 1.1em;
+        position: fixed;
+        // float: right;
+        right: 0;
+        bottom: 50px;
+        z-index: 3;
         text-align: left;
+        border: thin solid white;
+        background-color: orange;
         div {
             display: block;
+        }
+
+        a {
+            color: black;
+            &:hover {
+                color: white;
+            }
         }
     }
 }

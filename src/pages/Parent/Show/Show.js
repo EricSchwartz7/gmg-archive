@@ -230,11 +230,11 @@ class Show extends Component {
                                 }
                             </div>
                             {/* </Card.Group> */}
+                            <MusicPlayer 
+                                publicID={this.state.musicPlayer.publicID}
+                                title={this.state.musicPlayer.title}
+                            />
                             <div className="audio-recs">
-                                <MusicPlayer 
-                                    publicID={this.state.musicPlayer.publicID}
-                                    title={this.state.musicPlayer.title}
-                                />
                                 {this.state.audioRecs.map(data => {
                                     return (
                                         <AudioRec

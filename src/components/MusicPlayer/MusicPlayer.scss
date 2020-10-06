@@ -1,9 +1,25 @@
 
-audio {
-    bottom: 0; 
+.music-player {
     position: fixed; 
+    bottom: 9px; 
     right: 0; 
     z-index: 5;
-    width: 100%;
+    width: 99%;
+    height: 40px;
     // background-color: orange;
+
+    audio {
+        width: 100%;
+        bottom: 0;
+    }
+
+    .music-loader, .now-playing {
+        position: fixed;
+        bottom: 50px;
+        left: 0;
+    }
+
+    .now-playing {
+        background-color: #003300;
+    }
 }

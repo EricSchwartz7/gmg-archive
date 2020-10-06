@@ -53,10 +53,10 @@ class MusicPlayer extends Component {
     render() {
         let songTitle;
         if (this.state.loadingSong) {
-            songTitle = <Icon loading name="spinner" size="big" />
+            songTitle = <Icon className="music-loader" loading name="spinner" size="big" />
             this.load();
         } else if (this.state.publicID) {
-            songTitle = <p>Now Playing: {this.state.title}</p>;
+            songTitle = <div className="now-playing">Now Playing: {this.state.title}</div>;
         }
         let player =
             <Audio 
@@ -66,7 +66,7 @@ class MusicPlayer extends Component {
                 publicId={this.state.publicID}
                 fallback="Cannot play audio"/>
 
-        return <div>
+        return <div className="music-player">
             {songTitle}
             {player}
         </div>
