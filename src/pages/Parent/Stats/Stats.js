@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'semantic-ui-react'
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
 
 import './Stats.scss';
 
@@ -13,18 +15,16 @@ class Stats extends Component {
     }
 
     handleSelectStat(e, valueObj) {
-        this.setState({
-            loading: true
-        });
         const selectedObj = valueObj.options.find(option => option.value === valueObj.value);
+        this.setState({
+            loading: true,
+            statSelected: selectedObj
+        });
         axios.get(selectedObj.path).then(response => {
             this.setState({
                 currentStatArray: response.data,
                 loading: false
             });
-        });
-        this.setState({
-            statSelected: selectedObj
         });
     }
 
@@ -92,16 +92,49 @@ class Stats extends Component {
                 </div>
             });
         }
-            
+
+        const chartOptions = {
+            title: {
+                text: "Songs"
+            },
+            chart: {
+                height: (this.state.currentStatArray.length * 20) + 100,
+                type: "bar",
+                animation: {
+                    duration: 1000
+                }
+            },
+            xAxis: {
+                categories: this.state.loading? [] : this.state.currentStatArray.map(song => song.title)
+            },
+            yAxis: {
+                title: {
+                    text: null
+                }
+            },
+            series: [
+                {
+                    name: this.state.statSelected.text || "",
+                    data: this.state.loading? [] : this.state.currentStatArray.map(song => song.value)
+                }
+            ]
+        };
+
         return (
+            
             <section className="Stats">
                 <h1>Statistics</h1>
                 <div className="statistics">
                     {selectStatDropdown()}
-                    <div className="song-list">
+                    {/* <div className="song-list">
                         {songList}
-                    </div>
+                    </div> */}
                 </div>
+                {this.state.statSelected ? <HighchartsReact
+                    highcharts={Highcharts}
+                    options={chartOptions}
+                    immutable={true}
+                /> : ""}
             </section>
         );
     }
