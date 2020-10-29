@@ -95,14 +95,12 @@ class Stats extends Component {
 
         const chartOptions = {
             title: {
-                text: "Songs"
+                text: "Songs",
             },
+            colors: ["orange"],
             chart: {
                 height: (this.state.currentStatArray.length * 20) + 100,
-                type: "bar",
-                animation: {
-                    duration: 1000
-                }
+                type: "bar"
             },
             xAxis: {
                 categories: this.state.loading? [] : this.state.currentStatArray.map(song => song.title)
@@ -112,12 +110,27 @@ class Stats extends Component {
                     text: null
                 }
             },
-            series: [
-                {
-                    name: this.state.statSelected.text || "",
-                    data: this.state.loading? [] : this.state.currentStatArray.map(song => song.value)
+            series: [{
+                name: this.state.statSelected.text || "",
+                data: this.state.loading? [] : this.state.currentStatArray.map(song => {
+                    return {
+                        y: song.value,
+                        key: song.id
+                    }
+                })
+            }],
+            plotOptions: {
+                series: {
+                    cursor: 'pointer',
+                    point: {
+                        events: {
+                            click: (event) => {
+                                this.props.history.push(`/song/${event.point.key}`);
+                            }
+                        }
+                    }
                 }
-            ]
+            },
         };
 
         return (
