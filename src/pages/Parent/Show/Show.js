@@ -73,7 +73,7 @@ class Show extends Component {
         if ( this.showID ) {
             axios.get(`/videos_from_show/${this.showID}`)
                 .then(res => {
-                    this.setState({videos: res.data.resources});
+                    this.setState({videos: res.data});
                 });
         }
     }
