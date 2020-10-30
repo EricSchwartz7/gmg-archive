@@ -4,6 +4,7 @@ import { Button, Embed} from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom';
 import AddMediaDialog from "components/AddMediaDialog/AddMediaDialog";
 import Photo from "components/Photo/Photo";
+import Video from "components/Video/Video";
 import MusicPlayer from "components/MusicPlayer/MusicPlayer";
 import AudioRec from "components/AudioRec/AudioRec";
 import {CloudinaryContext} from 'cloudinary-react';
@@ -14,10 +15,11 @@ import './Show.scss';
 class Show extends Component {
     state = {
         loadedShow: {},
-        loadedVideos: false,
-        videos: [],
+        loadedYouTubeVideos: false,
+        youTubeVideos: [],
         photos: [],
         audioRecs: [],
+        videos: [],
         songsList: [],
         musicPlayer: {
             publicID: "",
@@ -28,9 +30,10 @@ class Show extends Component {
     componentDidMount() {
         this.showID = this.props.match.params.id;
         this.loadShowData();
-        this.loadVideos();
+        this.loadYouTubeVideos();
         this.getAllSongs();
         this.loadPhotos();
+        this.loadVideos();
         this.loadAudioRecs();
     }
 
@@ -45,13 +48,13 @@ class Show extends Component {
         }
     }
 
-    loadVideos() {
+    loadYouTubeVideos() {
         if ( this.showID ) {
             axios.get("/get_videos/" + this.showID)
                 .then( (response) => {
                     this.setState({
-                        videos: response.data,
-                        loadedVideos: true
+                        youTubeVideos: response.data,
+                        loadedYouTubeVideos: true
                     });
                 });
         }
@@ -62,6 +65,15 @@ class Show extends Component {
             axios.get(`/photos_from_show/${this.showID}`)
                 .then(res => {
                     this.setState({photos: res.data.resources});
+                });
+        }
+    }
+
+    loadVideos() {
+        if ( this.showID ) {
+            axios.get(`/videos_from_show/${this.showID}`)
+                .then(res => {
+                    this.setState({videos: res.data.resources});
                 });
         }
     }
@@ -181,7 +193,7 @@ class Show extends Component {
                     <h3>404 Not Found</h3>
                 </div>
             )
-        } else if (this.state.loadedShow.venue && this.state.loadedVideos && this.state.songsList.length > 0) {
+        } else if (this.state.loadedShow.venue && this.state.loadedYouTubeVideos && this.state.songsList.length > 0) {
             let date = new Date(this.state.loadedShow.date + " EST").toLocaleDateString();
 
             let firstSetSongs = this.createSongLinks(1);
@@ -189,7 +201,7 @@ class Show extends Component {
             let encore = this.createSongLinks(3);
 
             const YOUTUBE_CONSTANT = "watch?v=";
-            const videos = this.state.videos.map( (video) => {
+            const youTubeVideos = this.state.youTubeVideos.map( (video) => {
                 let sliceNumber = video.url.indexOf(YOUTUBE_CONSTANT) + YOUTUBE_CONSTANT.length
                 let id = video.url.slice(sliceNumber);
                 return {
@@ -229,6 +241,20 @@ class Show extends Component {
                                     })
                                 }
                             </div>
+                            <div className="videos">
+                                {
+                                    this.state.videos.map((data, i) => {
+                                        return (
+                                            <Video
+                                                key={i}
+                                                createdAt={data.created_at}
+                                                publicID={data.public_id}
+                                                deleteMediaItem={this.deleteMediaItem.bind(this, data.public_id)}
+                                            />
+                                        )
+                                    })
+                                }
+                            </div>
                             {/* </Card.Group> */}
                             <MusicPlayer 
                                 publicID={this.state.musicPlayer.publicID}
@@ -250,9 +276,9 @@ class Show extends Component {
                         </CloudinaryContext>
                         <div className="clearfix"></div>
                     </div>
-                    <div className="videos">
-                        {videos.map( (video, i) => 
-                            <div key={i}>
+                    <div className="youtube-section">
+                        {youTubeVideos.map( (video, i) => 
+                            <div className="youtube-video" key={i}>
                                 <h3>{video.title}</h3>
                                 <Embed 
                                     id={video.id}
@@ -263,7 +289,8 @@ class Show extends Component {
                                         style: {
                                           padding: 10,
                                         },
-                                      }}/>
+                                      }}>
+                                </Embed>
                             </div>
                         )}
                     </div>

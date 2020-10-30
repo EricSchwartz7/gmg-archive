@@ -1,0 +1,37 @@
+.video-container {
+    position: relative;
+    // width: 50%;
+    // max-width: 300px;
+}
+  
+.video {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.overlay {
+    position: absolute; 
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5); /* Black see-through */
+    opacity:0;
+    color: #f1f1f1;
+    transition: .5s ease;
+    color: white;
+}
+
+.button {
+    top: 2px;
+    right: 0;
+}
+
+.info {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.video-container:hover .overlay {
+    opacity: 0.7;
+}
