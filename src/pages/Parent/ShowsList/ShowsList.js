@@ -25,7 +25,7 @@ class ShowsList extends Component {
     }
 
     getYears() {
-        axios.get("/years")
+        axios.get("years")
             .then(response => {
                 const yearsList = response.data.map((year, i) => ({
                     key: i,
@@ -39,7 +39,7 @@ class ShowsList extends Component {
     }
 
     getVenues() {
-        axios.get("/venues")
+        axios.get("venues")
             .then(response => {
                 const venuesList = response.data.map((venue, i) => ({
                     key: i,
@@ -65,7 +65,7 @@ class ShowsList extends Component {
     }
 
     sortFilterFetch(params) {
-        axios.post("/filtered_shows", params)
+        axios.post("filtered_shows", params)
             .then( response => {
                 this.setState({ 
                     shows: response.data,

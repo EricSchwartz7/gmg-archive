@@ -21,6 +21,12 @@ class Stats extends Component {
             statSelected: selectedObj
         });
         axios.get(selectedObj.path).then(response => {
+        // const params = {
+        //     params: {
+        //         stat: selectedObj.value
+        //     }
+        // }
+        // axios.get("songs", params).then(response => {
             this.setState({
                 currentStatArray: response.data,
                 loading: false
@@ -33,38 +39,38 @@ class Stats extends Component {
         const statsList = [
             {
                 text: "Times Played",
-                value: "timesPlayed",
-                path: "/all_times_played"
+                value: "times_played",
+                path: "all_times_played"
             },
             {
                 text: "Percentage of Shows",
-                value: "showPercentage",
-                path: "/all_percentage_played"
+                value: "percentage_played",
+                path: "all_percentage_played"
             },
             {
                 text: "First Set Openers",
-                value: "firstSetOpeners",
-                path: "/all_set_openers/1"
+                value: "first_set_openers",
+                path: "all_set_openers/1"
             },
             {
                 text: "Second Set Openers",
-                value: "secondSetOpeners",
-                path: "/all_set_openers/2"
+                value: "second_set_openers",
+                path: "all_set_openers/2"
             },
             {
                 text: "First Set Closers",
-                value: "firstSetClosers",
-                path: "/all_set_closers/1"
+                value: "first_set_closers",
+                path: "all_set_closers/1"
             },
             {
                 text: "Second Set Closers",
-                value: "secondSetClosers",
-                path: "/all_set_closers/2"
+                value: "second_set_closers",
+                path: "all_set_closers/2"
             },
             {
                 text: "Encore Appearances",
-                value: "encoreAppearances",
-                path: "/all_encore_appearances"
+                value: "encore_appearances",
+                path: "all_encore_appearances"
             },
         ]
 
@@ -81,17 +87,17 @@ class Stats extends Component {
             return this.state.statSelected.value === "showPercentage"
         }
 
-        let songList;
+        // let songList;
 
-        if (this.state.loading) {
-            songList = <div>Loading...</div>
-        } else {
-            songList = this.state.currentStatArray.map((song, i) => {
-                return <div className="single-song" key={i}>
-                    <Link to={"/song/" + song.id}>{song.title}</Link> - {song.value}{showPercentSign() ? "%" : ""}
-                </div>
-            });
-        }
+        // if (this.state.loading) {
+        //     songList = <div>Loading...</div>
+        // } else {
+        //     songList = this.state.currentStatArray.map((song, i) => {
+        //         return <div className="single-song" key={i}>
+        //             <Link to={"/song/" + song.id}>{song.title}</Link> - {song.value}{showPercentSign() ? "%" : ""}
+        //         </div>
+        //     });
+        // }
 
         const chartOptions = {
             title: {

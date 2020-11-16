@@ -19,7 +19,7 @@ class SongsList extends Component {
     }
 
     sortFilterFetch(params) {
-        axios.get("/songs")
+        axios.get("songs")
             .then(response => {
                 this.setState({
                     songs: response.data,

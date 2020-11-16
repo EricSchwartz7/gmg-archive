@@ -34,7 +34,7 @@ class AddMediaDialog extends Component {
     render() {
         return (
             <span>
-                <Button onClick={this.show.bind(this)}>Add a video from YouTube</Button>
+                <Button onClick={this.show.bind(this)}>Embed from YouTube</Button>
                 <Modal open={this.state.open}>
                     <Modal.Header>Add a title and URL</Modal.Header>
                     <Modal.Content>

@@ -39,7 +39,7 @@ class Show extends Component {
 
     loadShowData () {
         if (this.showID && _.isEmpty(this.state.loadedShow)) {
-                axios.get( '/shows/' + this.showID )
+                axios.get(`shows/${this.showID}`)
                     .then( response => {
                         this.setState({loadedShow: response.data});
                     }).catch( () => {
@@ -50,7 +50,7 @@ class Show extends Component {
 
     loadYouTubeVideos() {
         if ( this.showID ) {
-            axios.get("/get_videos/" + this.showID)
+            axios.get("get_videos/" + this.showID)
                 .then( (response) => {
                     this.setState({
                         youTubeVideos: response.data,
@@ -62,7 +62,7 @@ class Show extends Component {
 
     loadPhotos() {
         if ( this.showID ) {
-            axios.get(`/photos_from_show/${this.showID}`)
+            axios.get(`photos_from_show/${this.showID}`)
                 .then(res => {
                     this.setState({photos: res.data.resources});
                 });
@@ -71,7 +71,7 @@ class Show extends Component {
 
     loadVideos() {
         if ( this.showID ) {
-            axios.get(`/videos_from_show/${this.showID}`)
+            axios.get(`videos_from_show/${this.showID}`)
                 .then(res => {
                     this.setState({videos: res.data});
                 });
@@ -80,7 +80,7 @@ class Show extends Component {
 
     loadAudioRecs() {
         if ( this.showID ) {
-            axios.get(`/audio_recs_from_show/${this.showID}`)
+            axios.get(`audio_recs_from_show/${this.showID}`)
                 .then(res => {
                     this.setState({audioRecs: res.data});
                 });
@@ -88,7 +88,7 @@ class Show extends Component {
     }
 
     getAllSongs() {
-        axios.get("/songs")
+        axios.get("songs")
             .then(response => {
                 const songsList = response.data.map((song, i) => ({
                     key: i,
@@ -120,15 +120,15 @@ class Show extends Component {
 
     handleSubmit(videoData) {
         videoData.show_id = this.showID;
-        axios.post('/videos', videoData).then( (response) => 
+        axios.post('videos', videoData).then( (response) => 
             this.setState({
-                videos: this.state.videos.concat(response.data)
+                youTubeVideos: this.state.youTubeVideos.concat(response.data)
             })
         );
     }
 
     generateSignature(callback, params_to_sign) {
-        axios.post("/generate_signature", params_to_sign).then( response => {
+        axios.post("generate_signature", params_to_sign).then( response => {
             callback(response.data.signature);
         })
     }
@@ -156,7 +156,7 @@ class Show extends Component {
                         show_id: this.showID,
                         media_type: mediaType
                     };
-                    axios.post("/media_items", media_payload);
+                    axios.post("media_items", media_payload);
                 }
             }.bind(this));
     }
@@ -221,9 +221,9 @@ class Show extends Component {
                         <Link to={'/upload/' + this.showID}>        
                             <Button>Edit</Button>
                         </Link>
-                        <AddMediaDialog handleSubmit={this.handleSubmit.bind(this)}/>
                         {/* <DeleteButton history={this.props.history} id={this.showID} /> */}
                         <Button onClick={this.openUploadWidget.bind(this)}>Upload Media</Button>
+                        <AddMediaDialog handleSubmit={this.handleSubmit.bind(this)}/>
                     </div>
                     <div className="gallery">
                         <CloudinaryContext cloudName="gmg-archive-project">

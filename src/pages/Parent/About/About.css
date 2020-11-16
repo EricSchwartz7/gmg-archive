@@ -1,5 +1,6 @@
 .About {
-    display: flex;
+    display: block;
     justify-content: center;
     margin: auto;
+    text-align: center;
 }

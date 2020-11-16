@@ -11,7 +11,7 @@ const Photo = (props) =>
                 <Transformation
                     crop="scale"
                     // width="300"
-                    height="200"
+                    height="250"
                     dpr="auto"
                     responsive_placeholder="blank"
                 />

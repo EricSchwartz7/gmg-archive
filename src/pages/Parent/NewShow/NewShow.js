@@ -29,7 +29,7 @@ class NewShow extends Component {
 
     loadData () {
         if ( this.props.match.params.id ) {
-            axios.get( '/shows/' + this.props.match.params.id )
+            axios.get( 'shows/' + this.props.match.params.id )
                 .then( response => {
                     this.setState({
                         showData: response.data
@@ -46,7 +46,7 @@ class NewShow extends Component {
 
 
     postDataHandler = () => {
-        axios.post('/shows', this.state.showData)
+        axios.post('shows', this.state.showData)
             .then(response => {
                 this.setState({
                     routeToShow: true,
@@ -56,7 +56,7 @@ class NewShow extends Component {
     }
 
     updateHandler = () => {
-        axios.put('/shows/' + this.props.match.params.id, this.state.showData)
+        axios.put('shows/' + this.props.match.params.id, this.state.showData)
             .then(response => {
                 this.setState({
                     routeToShow: true,
@@ -83,7 +83,7 @@ class NewShow extends Component {
     }
 
     getAllSongs() {
-        axios.get("/songs")
+        axios.get("songs")
             .then(response => {
                 const songsList = response.data.map((song, i) => ({
                     key: i,

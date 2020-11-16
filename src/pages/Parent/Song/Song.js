@@ -17,7 +17,7 @@ class Song extends Component {
 
     loadSongData() {
         if (this.props.match.params.id) {
-            axios.get("/songs/" + this.props.match.params.id)
+            axios.get("songs/" + this.props.match.params.id)
                 .then(response => {
                     this.setState({loadedSong: response.data})
                 }).catch( () => {
@@ -28,7 +28,7 @@ class Song extends Component {
 
     fetchShowAppearances() {
         if (this.props.match.params.id) {
-            axios.get("/show_appearances/" + this.props.match.params.id)
+            axios.get("show_appearances/" + this.props.match.params.id)
                 .then(response => {
                     this.setState({showAppearances: response.data});
                 });

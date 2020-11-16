@@ -87,9 +87,14 @@
         }
     }
 
-    .youtube-video {
-        height: 200px;
-        width: 300px;
-        padding: 0
+    .youtube-section{
+
+        .youtube-video {
+            display: inline-block;
+            height: 350px;
+            width: 500px;
+            margin: 5px;
+            padding: 0;
+        }
     }
 }

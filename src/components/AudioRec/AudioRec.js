@@ -22,7 +22,7 @@ class AudioRec extends Component {
     }
 
     handleBlur() {
-        axios.put('/media_items/' + this.props.id, {title: this.state.newTitle})
+        axios.put('media_items/' + this.props.id, {title: this.state.newTitle})
         this.setState({
             editMode: false
         })

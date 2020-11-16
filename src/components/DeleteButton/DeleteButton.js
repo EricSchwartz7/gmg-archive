@@ -12,7 +12,7 @@ class DeleteButton extends Component {
     close = () => this.setState({open: false});
 
     handleDelete = () => {
-        axios.delete("/shows/" + this.props.id).then( () => {
+        axios.delete("shows/" + this.props.id).then( () => {
             this.close();
             this.props.history.push("/shows");
         });
