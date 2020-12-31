@@ -9,6 +9,8 @@ import Show from './Show/Show';
 import SongsList from './SongsList/SongsList';
 import Song from './Song/Song';
 import Stats from './Stats/Stats';
+import LogIn from './LogIn/LogIn';
+import SignUp from './SignUp/SignUp';
 
 class Parent extends Component {
     render () {
@@ -39,6 +41,9 @@ class Parent extends Component {
                             <li><NavLink
                                 to="/songs"
                                 >Songs</NavLink></li>
+                            <li><NavLink
+                                to="/login"
+                                >Log In</NavLink></li>
                         </ul>
                     </nav>
                 </header>
@@ -51,6 +56,8 @@ class Parent extends Component {
                     <Route path="/songs" component={SongsList} />
                     <Route path="/song/:id" component={Song} />
                     <Route path="/stats" component={Stats} />
+                    <Route path="/login" component={LogIn} />
+                    <Route path="/signup" component={SignUp} />
                 </Switch>
             </div>
         );

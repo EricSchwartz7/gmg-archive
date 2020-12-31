@@ -40,9 +40,9 @@ class Show extends Component {
     loadShowData () {
         if (this.showID && _.isEmpty(this.state.loadedShow)) {
                 axios.get(`shows/${this.showID}`)
-                    .then( response => {
+                    .then(response => {
                         this.setState({loadedShow: response.data});
-                    }).catch( () => {
+                    }).catch(() => {
                         this.setState({loadedShow: "notfound"});
                     });
         }

@@ -20,13 +20,13 @@ class Stats extends Component {
             loading: true,
             statSelected: selectedObj
         });
-        axios.get(selectedObj.path).then(response => {
-        // const params = {
-        //     params: {
-        //         stat: selectedObj.value
-        //     }
-        // }
-        // axios.get("songs", params).then(response => {
+        // axios.get(selectedObj.path).then(response => {
+        const params = {
+            params: {
+                stat: selectedObj.value
+            }
+        }
+        axios.get("songs", params).then(response => {
             this.setState({
                 currentStatArray: response.data,
                 loading: false
