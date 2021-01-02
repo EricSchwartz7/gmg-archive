@@ -18,6 +18,14 @@ class Parent extends Component {
         loggedIn: false
     }
 
+    componentDidMount () {
+        if (localStorage.getItem('auth_token') && !this.state.loggedIn) {
+            this.setState({
+                loggedIn: true
+            });
+        }
+    }
+
     handleLogIn = (credentials) => {
         return axios.post("authenticate", credentials).then(response => {
             if (response.data.auth_token) {

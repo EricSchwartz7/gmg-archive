@@ -17,8 +17,7 @@ class ShowsList extends Component {
             year_filter: "",
             venue_filter: "",
             sort_order: "most_recent"
-        },
-        loggingOut: false
+        }
     }
 
     componentDidMount() {

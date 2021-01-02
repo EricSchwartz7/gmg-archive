@@ -256,7 +256,7 @@ class Show extends Component {
                                 }
                             </div>
                             {/* </Card.Group> */}
-                            <MusicPlayer 
+                            {/* <MusicPlayer 
                                 publicID={this.state.musicPlayer.publicID}
                                 title={this.state.musicPlayer.title}
                             />
@@ -272,7 +272,7 @@ class Show extends Component {
 
                                     )
                                 })}
-                            </div>
+                            </div> */}
                         </CloudinaryContext>
                         <div className="clearfix"></div>
                     </div>
