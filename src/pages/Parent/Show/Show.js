@@ -217,14 +217,14 @@ class Show extends Component {
                     <p><span className="set-title">SET 1: </span>{firstSetSongs}</p>
                     {secondSet ? (<p><span className="set-title">SET 2: </span>{secondSet}</p>) : null}
                     {encore ? (<p><span className="set-title">ENCORE: </span>{encore}</p>) : null}
-                    <div className="button-group">
-                        <Link to={'/upload/' + this.showID}>        
-                            <Button>Edit</Button>
-                        </Link>
-                        {/* <DeleteButton history={this.props.history} id={this.showID} /> */}
-                        <Button onClick={this.openUploadWidget.bind(this)}>Upload Media</Button>
-                        <AddMediaDialog handleSubmit={this.handleSubmit.bind(this)}/>
-                    </div>
+                    {localStorage.getItem('auth_token') ? 
+                        <div className="button-group">
+                            <Link to={'/upload/' + this.showID}>        
+                                <Button>Edit</Button>
+                            </Link>
+                            <Button onClick={this.openUploadWidget.bind(this)}>Upload Media</Button>
+                            <AddMediaDialog handleSubmit={this.handleSubmit.bind(this)}/>
+                        </div> : ""}
                     <div className="gallery">
                         <CloudinaryContext cloudName="gmg-archive-project">
                             <div className="photos">

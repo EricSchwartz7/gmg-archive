@@ -17,10 +17,11 @@ const Photo = (props) =>
                 />
             </Image>
         </a>
-        <Button className="overlay button"
-            icon="delete"
-            onClick={props.deleteMediaItem}
-        ></Button>
+        {localStorage.getItem('auth_token') ? 
+            <Button className="overlay button"
+                icon="delete"
+                onClick={props.deleteMediaItem}
+            ></Button> : ""}
         <div className="overlay info">Uploaded {moment(props.createdAt).format('MM/DD/YY, h:mm a')}</div>
     </div>
 

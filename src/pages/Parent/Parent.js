@@ -11,10 +11,29 @@ import Song from './Song/Song';
 import Stats from './Stats/Stats';
 import LogIn from './LogIn/LogIn';
 import SignUp from './SignUp/SignUp';
+import axios from 'axios';
 
 class Parent extends Component {
+    state = {
+        loggedIn: false
+    }
+
+    handleLogIn = (credentials) => {
+        return axios.post("authenticate", credentials).then(response => {
+            if (response.data.auth_token) {
+                localStorage.setItem("auth_token", response.data.auth_token);
+                this.setState({
+                    loggedIn: true
+                });
+            }
+        });
+    }
+
     logOut = () => {
         localStorage.removeItem("auth_token");
+        this.setState({
+            loggedIn: false
+        });
     }
 
     render () {
@@ -38,20 +57,22 @@ class Parent extends Component {
                             <li><NavLink
                                 to="/stats"
                                 >Stats</NavLink></li>
-                            <li><NavLink to={{
-                                pathname: '/upload',
-                                hash: '#submit'
-                            }}>Add a Show</NavLink></li>
+                            {this.state.loggedIn ?
+                                <li><NavLink to={{
+                                    pathname: '/upload',
+                                    hash: '#submit'
+                                }}>Add a Show</NavLink></li> : ""}
                             <li><NavLink
                                 to="/songs"
                                 >Songs</NavLink></li>
-                            <li><NavLink
-                                to="/login"
-                                >Log In</NavLink></li>
-                            <li><NavLink
-                                to="/logout"
-                                onClick={this.logOut.bind(this)}
-                                >Log Out</NavLink></li>
+                            {this.state.loggedIn ?
+                                <li><NavLink
+                                    to="/logout"
+                                    onClick={this.logOut.bind(this)}
+                                    >Log Out</NavLink></li> :
+                                <li><NavLink
+                                    to="/login"
+                                    >Log In</NavLink></li>}
                         </ul>
                     </nav>
                 </header>
@@ -64,8 +85,10 @@ class Parent extends Component {
                     <Route path="/songs" component={SongsList} />
                     <Route path="/song/:id" component={Song} />
                     <Route path="/stats" component={Stats} />
-                    <Route path="/login" component={LogIn} />
                     <Route path="/logout" component={About} />
+                    <Route path="/login">
+                        <LogIn handleLogIn={this.handleLogIn.bind(this)}/>
+                    </Route>
                     <Route path="/signup" component={SignUp} />
                 </Switch>
             </div>

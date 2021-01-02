@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Button, Form, Input, Message } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 import './LogIn.scss';
 
 class LogIn extends Component {
     state = {
         success: false,
+        invalidLogIn: false,
         email: "",
         password: ""
     }
@@ -27,17 +27,30 @@ class LogIn extends Component {
             email: this.state.email,
             password: this.state.password
         }
-        axios.post("authenticate", credentials).then(response => {
-            if (response.data.auth_token) {
-                localStorage.setItem("auth_token", response.data.auth_token);
-            }
-        });
+        this.props.handleLogIn(credentials).then(() => {
+            this.setState({
+                success: true,
+                invalidLogIn: false
+            })
+        }).catch(() => {
+            this.setState({
+                success: false,
+                invalidLogIn: true
+            });
+        })
+    }
+
+    validateForm() {
+        return (
+            this.state.email.length > 0 &&
+            this.state.password.length > 0
+        )
     }
 
     render() {    
         return (
             <section className="LogIn">
-                <Form success={this.state.success}>
+                <Form success={this.state.success} error={this.state.invalidLogIn}>
                     <Form.Field>
                         <Input
                             name='email'
@@ -57,12 +70,20 @@ class LogIn extends Component {
                     </Form.Field>
                     <Message
                         success
-                        header='Form Completed'
-                        content="You're all signed up for the newsletter"
+                        header="Wepa!"
+                        content="You have successfully logged in."
                     />
-                    <Button onClick={this.handleLogIn.bind(this)}>Log In</Button>
+                    <Message
+                        error
+                        header="Uh oh."
+                        content="You email or password is incorrect."
+                    />
+                    <Button 
+                        onClick={this.handleLogIn.bind(this)}
+                        disabled={!this.validateForm()}
+                    >Log In</Button>
                     <br/>
-                    <Link to={"/signup"}>Sign Up</Link>
+                    {/* <Link to={"/signup"}>Sign Up</Link> */}
                 </Form>
 
             </section>
