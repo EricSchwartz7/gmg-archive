@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, NavLink, Switch } from 'react-router-dom';
+import { Route, NavLink, Switch, FadeIn } from 'react-router-dom';
 
 import './Parent.css';
 import ShowsList from './ShowsList/ShowsList';
@@ -85,11 +85,19 @@ class Parent extends Component {
                     <Route path="/songs" component={SongsList} />
                     <Route path="/song/:id" component={Song} />
                     <Route path="/stats" component={Stats} />
-                    <Route path="/logout">
-                        <ShowsList loggingOut />
+                    <Route 
+                        path="/logout"
+                        render={routeProps => (
+                            <ShowsList {...routeProps} loggingOut />
+                        )}>
                     </Route>
-                    <Route path="/login">
-                        <LogIn handleLogIn={this.handleLogIn.bind(this)}/>
+                    <Route 
+                        path="/login"
+                        render={routeProps => (
+                            <LogIn 
+                                {...routeProps} 
+                                handleLogIn={this.handleLogIn.bind(this)}
+                            />)}>
                     </Route>
                     <Route path="/signup" component={SignUp} />
                 </Switch>

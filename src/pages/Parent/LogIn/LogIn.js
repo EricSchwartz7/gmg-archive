@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, Input, Message } from 'semantic-ui-react'
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import './LogIn.scss';
 
@@ -27,12 +27,15 @@ class LogIn extends Component {
             email: this.state.email,
             password: this.state.password
         }
-        this.props.handleLogIn(credentials).then(() => {
+        this.props.handleLogIn(credentials).then(function() {
             this.setState({
                 success: true,
                 invalidLogIn: false
-            })
-        }).catch(() => {
+            });
+            window.setTimeout(() => {
+                this.props.history.push("/shows");
+            }, 2000);
+        }.bind(this)).catch(() => {
             this.setState({
                 success: false,
                 invalidLogIn: true
