@@ -74,7 +74,6 @@ class NewShow extends Component {
     handleChange (field, value) {
         let showData = this.state.showData;
         showData[field] = value;
-        // debugger;
         if (field != "setlist") {
             this.setState({
                 showData: showData

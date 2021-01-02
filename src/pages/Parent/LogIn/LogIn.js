@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form, Input, Message } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import './LogIn.scss';
 
@@ -22,7 +23,15 @@ class LogIn extends Component {
     }
 
     handleLogIn() {
-        debugger;
+        let credentials = {
+            email: this.state.email,
+            password: this.state.password
+        }
+        axios.post("authenticate", credentials).then(response => {
+            if (response.data.auth_token) {
+                localStorage.setItem("auth_token", response.data.auth_token);
+            }
+        });
     }
 
     render() {    

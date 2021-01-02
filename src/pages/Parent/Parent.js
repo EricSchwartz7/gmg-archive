@@ -13,6 +13,10 @@ import LogIn from './LogIn/LogIn';
 import SignUp from './SignUp/SignUp';
 
 class Parent extends Component {
+    logOut = () => {
+        localStorage.removeItem("auth_token");
+    }
+
     render () {
         return (
             <div className="Parent">
@@ -44,6 +48,10 @@ class Parent extends Component {
                             <li><NavLink
                                 to="/login"
                                 >Log In</NavLink></li>
+                            <li><NavLink
+                                to="/logout"
+                                onClick={this.logOut.bind(this)}
+                                >Log Out</NavLink></li>
                         </ul>
                     </nav>
                 </header>
@@ -57,6 +65,7 @@ class Parent extends Component {
                     <Route path="/song/:id" component={Song} />
                     <Route path="/stats" component={Stats} />
                     <Route path="/login" component={LogIn} />
+                    <Route path="/logout" component={About} />
                     <Route path="/signup" component={SignUp} />
                 </Switch>
             </div>
