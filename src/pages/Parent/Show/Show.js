@@ -138,7 +138,7 @@ class Show extends Component {
             { 
                 cloud_name: "gmg-archive-project",
                 sources: ["local", "url", "facebook", "instagram", "google_drive", "dropbox"], 
-                upload_preset: "basic-photo",
+                upload_preset: "gmg-uploads",
                 apiKey: "119581295779122",
                 tags: [this.showID],
                 uploadSignature: this.generateSignature
