@@ -85,7 +85,9 @@ class Parent extends Component {
                     <Route path="/songs" component={SongsList} />
                     <Route path="/song/:id" component={Song} />
                     <Route path="/stats" component={Stats} />
-                    <Route path="/logout" component={About} />
+                    <Route path="/logout">
+                        <ShowsList loggingOut />
+                    </Route>
                     <Route path="/login">
                         <LogIn handleLogIn={this.handleLogIn.bind(this)}/>
                     </Route>

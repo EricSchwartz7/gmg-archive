@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from '../../../axios';
 import { Link } from 'react-router-dom';
-import { Card, Dropdown, Form } from 'semantic-ui-react';
+import { Card, Dropdown, Form, Message } from 'semantic-ui-react';
 import _ from 'lodash';
 
 import './ShowsList.scss';
@@ -17,7 +17,8 @@ class ShowsList extends Component {
             year_filter: "",
             venue_filter: "",
             sort_order: "most_recent"
-        }
+        },
+        loggingOut: false
     }
 
     componentDidMount() {
@@ -111,6 +112,12 @@ class ShowsList extends Component {
 
         return (
             <div>
+                {this.props.loggingOut ? 
+                    <Message
+                        success
+                        header="Wepa!"
+                        content="You have successfully logged out."
+                    /> : ""}
                 <section className="ShowsList">
                     <div className="filters">
                         <Form>
