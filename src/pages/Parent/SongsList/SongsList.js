@@ -7,11 +7,6 @@ import './SongsList.scss';
 class SongsList extends Component {
     state = {
         songs: [],
-        // filterAndSort: {
-        //     year_filter: "",
-        //     venue_filter: "",
-        //     sort_order: "most_recent"
-        // }
     }
     
     componentDidMount() {
@@ -23,7 +18,6 @@ class SongsList extends Component {
             .then(response => {
                 this.setState({
                     songs: response.data,
-                    // filterAndSort: {...params}
                 });
                 console.log(response.data)
             })
@@ -43,6 +37,7 @@ class SongsList extends Component {
         return (
             <section className="SongsList">
                 <h1>All Go Man Go Songs</h1>
+                <p>(Including covers)</p>
                 <div className="songs">
                     {songList}
                 </div>

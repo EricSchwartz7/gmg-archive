@@ -15,8 +15,8 @@ const VideoClip = (props) =>
                 <Transformation
                     background="black"
                     crop="pad"
-                    width="400"
-                    height="300"
+                    width="1600"
+                    height="1200"
                     // preload="none"
                     // dpr="auto"
                     // responsive_placeholder="blank"

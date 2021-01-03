@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, NavLink, Switch, FadeIn } from 'react-router-dom';
 
-import './Parent.css';
+import './Parent.scss';
 import ShowsList from './ShowsList/ShowsList';
 import NewShow from './NewShow/NewShow';
 import About from './About/About';
@@ -49,7 +49,7 @@ class Parent extends Component {
             <div className="Parent">
                 <header>
                     <nav>
-                        <ul>
+                        <ul className="main">
                             <li><NavLink
                                 to="/about"
                                 >About</NavLink></li>
@@ -73,6 +73,8 @@ class Parent extends Component {
                             <li><NavLink
                                 to="/songs"
                                 >Songs</NavLink></li>
+                        </ul>
+                        <ul className="login">
                             {this.state.loggedIn ?
                                 <li><NavLink
                                     to="/logout"
