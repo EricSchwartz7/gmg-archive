@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { CSSTransitionGroup } from 'react-transition-group';
 
 import './Song.scss';
 
@@ -48,18 +49,25 @@ class Song extends Component {
             )
         } else if (this.state.loadedSong) {
             song = (
-                <div className="Song">
-                    <h1>{this.state.loadedSong.title}</h1>
-                    <h3>{this.state.loadedSong.title} was played at the following shows:</h3>
-                    <div className="show-list">
-                        {this.state.showAppearances.map((show, i) => {
-                            return <div key={i}>
-                                <Link className="show" to={"/show/" + show.id}>{show.date} - {show.venue}</Link>
-                            </div>
-                        })}
+                <CSSTransitionGroup
+                    transitionName="fade"
+                    transitionAppear={true}
+                    transitionAppearTimeout={500}
+                    transitionEnter={false}
+                    transitionLeave={false}>
+                    <div className="Song">
+                        <h1>{this.state.loadedSong.title}</h1>
+                        <h3>{this.state.loadedSong.title} was played at the following shows:</h3>
+                        <div className="show-list">
+                            {this.state.showAppearances.map((show, i) => {
+                                return <div key={i}>
+                                    <Link className="show" to={"/show/" + show.id}>{show.date} - {show.venue}</Link>
+                                </div>
+                            })}
+                        </div>
+                        <p className="lyrics">{this.state.loadedSong.lyrics}</p>
                     </div>
-                    <p className="lyrics">{this.state.loadedSong.lyrics}</p>
-                </div>
+                </CSSTransitionGroup>
             )
         }
 

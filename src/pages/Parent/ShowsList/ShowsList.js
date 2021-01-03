@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import axios from '../../../axios';
 import { Link } from 'react-router-dom';
-import { Card, Dropdown, Form, Message } from 'semantic-ui-react';
+import { Card, Dropdown, Form, Message, Loader, Dimmer } from 'semantic-ui-react';
 import _ from 'lodash';
 
 import './ShowsList.scss';
-import ShowCard from '../../../components/ShowCard/ShowCard'
-import FilterDropdown from '../../../components/FilterDropdown/FilterDropdown'
+import ShowCard from '../../../components/ShowCard/ShowCard';
+import FilterDropdown from '../../../components/FilterDropdown/FilterDropdown';
+import Fade from '../../../components/Fade/Fade';
+import { CSSTransitionGroup } from 'react-transition-group';
 
 class ShowsList extends Component {
     state = {
@@ -17,7 +19,8 @@ class ShowsList extends Component {
             year_filter: "",
             venue_filter: "",
             sort_order: "most_recent"
-        }
+        },
+        loading: false
     }
 
     componentDidMount() {
@@ -65,17 +68,22 @@ class ShowsList extends Component {
     }
 
     sortFilterFetch(params) {
+        this.setState({
+            loading: true
+        });
         axios.post("filtered_shows", params)
             .then( response => {
                 this.setState({ 
                     shows: response.data,
-                    filterAndSort: {...params}
+                    filterAndSort: {...params},
+                    loading: false
                 });
-                console.log( response.data );
             })
             .catch(error => {
-                console.log( error );
-            });
+                this.setState({
+                    loading: false
+                });
+            })
     }
 
     render() {
@@ -110,40 +118,50 @@ class ShowsList extends Component {
         ];
 
         return (
-            <div>
-                {this.props.loggingOut ? 
-                    <Message
-                        success
-                        header="Wepa!"
-                        content="You have successfully logged out."
-                    /> : ""}
-                <section className="ShowsList">
-                    <div className="filters">
-                        <Form>
-                            <Form.Group widths="equal">
-                                <FilterDropdown
-                                    placeholder="Year"
-                                    onClick={this.getYears.bind(this)}
-                                    options={this.state.yearsList}
-                                    onChange={this.filterYear.bind(this)}/>
-                                <FilterDropdown
-                                    placeholder="Venue"
-                                    onClick={this.getVenues.bind(this)}
-                                    options={this.state.venuesList}
-                                    onChange={this.filterVenue.bind(this)}/>
-                                <Form.Select
-                                    placeholder="Sort"
-                                    selection
-                                    options={sortOptions}
-                                    onChange={this.sort.bind(this)}/>
-                            </Form.Group>
-                        </Form>
-                    </div>
-                    <div className="cards">
-                        <Card.Group>{showCards}</Card.Group>
-                    </div>
-                </section>
-            </div>
+                <div>
+                    {this.props.loggingOut ? 
+                        <Message
+                            success
+                            header="Wepa!"
+                            content="You have successfully logged out."
+                        /> : ""}
+                    <section className="ShowsList">
+                        <div className="filters">
+                            <Form>
+                                <Form.Group widths="equal">
+                                    <FilterDropdown
+                                        placeholder="Year"
+                                        onClick={this.getYears.bind(this)}
+                                        options={this.state.yearsList}
+                                        onChange={this.filterYear.bind(this)}/>
+                                    <FilterDropdown
+                                        placeholder="Venue"
+                                        onClick={this.getVenues.bind(this)}
+                                        options={this.state.venuesList}
+                                        onChange={this.filterVenue.bind(this)}/>
+                                    <Form.Select
+                                        placeholder="Sort"
+                                        selection
+                                        options={sortOptions}
+                                        onChange={this.sort.bind(this)}/>
+                                </Form.Group>
+                            </Form>
+                        </div>
+                        {this.state.loading ? 
+                            <Loader active>Loading</Loader> :
+                            <CSSTransitionGroup
+                                transitionName="fade"
+                                transitionAppear={true}
+                                transitionAppearTimeout={500}
+                                transitionEnter={false}
+                                transitionLeave={false}>
+                                <div className="cards">
+                                    <Card.Group>{showCards}</Card.Group>
+                                </div>
+                            </CSSTransitionGroup>
+                        }
+                    </section>
+                </div>
         );
     }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from '../../../axios';
 import { Link } from 'react-router-dom';
+import { CSSTransitionGroup } from 'react-transition-group';
 
 import './SongsList.scss';
 
@@ -35,13 +36,20 @@ class SongsList extends Component {
             )
         })
         return (
-            <section className="SongsList">
-                <h1>All Go Man Go Songs</h1>
-                <p>(Including covers)</p>
-                <div className="songs">
-                    {songList}
-                </div>
-            </section>
+            <CSSTransitionGroup
+                transitionName="fade"
+                transitionAppear={true}
+                transitionAppearTimeout={500}
+                transitionEnter={false}
+                transitionLeave={false}>
+                <section className="SongsList">
+                    <h1>All Go Man Go Songs</h1>
+                    <p>(Including covers)</p>
+                    <div className="songs">
+                        {songList}
+                    </div>
+                </section>
+            </CSSTransitionGroup>
         );
     }
 }

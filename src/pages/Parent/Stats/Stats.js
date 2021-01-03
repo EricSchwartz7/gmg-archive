@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Dropdown } from 'semantic-ui-react'
+import { Dropdown, Loader } from 'semantic-ui-react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import { CSSTransitionGroup } from 'react-transition-group';
 
 import './Stats.scss';
 
@@ -139,21 +140,31 @@ class Stats extends Component {
             },
         };
 
+        let getChart = () => {
+            let chart = ""
+            if (this.state.statSelected) {
+                if (this.state.loading) {
+                    chart = <Loader active>Loading</Loader>;
+                } else {
+                    chart = 
+                        <HighchartsReact
+                            highcharts={Highcharts}
+                            options={chartOptions}
+                            immutable={true}
+                        />;
+                }
+            }
+            return chart;
+        }
+
         return (
             
             <section className="Stats">
                 <h1>Statistics</h1>
                 <div className="statistics">
                     {selectStatDropdown()}
-                    {/* <div className="song-list">
-                        {songList}
-                    </div> */}
                 </div>
-                {this.state.statSelected ? <HighchartsReact
-                    highcharts={Highcharts}
-                    options={chartOptions}
-                    immutable={true}
-                /> : ""}
+                {getChart()}
             </section>
         );
     }
