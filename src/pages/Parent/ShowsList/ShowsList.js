@@ -7,7 +7,6 @@ import _ from 'lodash';
 import './ShowsList.scss';
 import ShowCard from '../../../components/ShowCard/ShowCard';
 import FilterDropdown from '../../../components/FilterDropdown/FilterDropdown';
-import Fade from '../../../components/Fade/Fade';
 import { CSSTransitionGroup } from 'react-transition-group';
 
 class ShowsList extends Component {
