@@ -6,7 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios';
 
 
-axios.defaults.baseURL = 'http://localhost:3000/api/v1/';
+axios.defaults.baseURL = 'https://gmg-archive-api.herokuapp.com/api/v1/';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 axios.interceptors.request.use(request => {
