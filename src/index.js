@@ -4,9 +4,10 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios';
+import {API_ROOT} from './APIRoot';
 
 
-axios.defaults.baseURL = 'https://gmg-archive-api.herokuapp.com/api/v1/';
+axios.defaults.baseURL = API_ROOT
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 axios.interceptors.request.use(request => {

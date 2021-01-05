@@ -1,7 +1,8 @@
 import axios from 'axios';
+import {API_ROOT} from './APIRoot';
 
 const instance = axios.create({
-    baseURL: 'https://gmg-archive-api.herokuapp.com/api/v1/'
+    baseURL: API_ROOT
 });
 
 let getAuthToken = (config) => {
