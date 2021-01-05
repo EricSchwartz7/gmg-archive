@@ -6,7 +6,7 @@ import './LogIn.scss';
 
 class LogIn extends Component {
     state = {
-        success: false,
+        // success: false,
         invalidLogIn: false,
         email: "",
         password: ""
@@ -29,15 +29,18 @@ class LogIn extends Component {
         }
         this.props.handleLogIn(credentials).then(function() {
             this.setState({
-                success: true,
+                // success: true,
                 invalidLogIn: false
             });
-            window.setTimeout(() => {
-                this.props.history.push("/shows");
-            }, 2000);
+            // window.setTimeout(() => {
+                this.props.history.push({
+                    pathname: "/shows",
+                    loggingIn: true
+                });
+            // }, 2000);
         }.bind(this)).catch(() => {
             this.setState({
-                success: false,
+                // success: false,
                 invalidLogIn: true
             });
         })
@@ -53,7 +56,7 @@ class LogIn extends Component {
     render() {    
         return (
             <section className="LogIn">
-                <Form success={this.state.success} error={this.state.invalidLogIn}>
+                <Form error={this.state.invalidLogIn}>
                     <Form.Field>
                         <Input
                             name='email'
@@ -71,11 +74,11 @@ class LogIn extends Component {
                             onChange={this.handleChange.bind(this)}
                         />
                     </Form.Field>
-                    <Message
+                    {/* <Message
                         success
                         header="Wepa!"
                         content="You have successfully logged in."
-                    />
+                    /> */}
                     <Message
                         error
                         header="Uh oh."

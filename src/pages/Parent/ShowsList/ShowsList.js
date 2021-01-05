@@ -124,6 +124,12 @@ class ShowsList extends Component {
                             header="Wepa!"
                             content="You have successfully logged out."
                         /> : ""}
+                    {this.props.location.loggingIn ? 
+                        <Message
+                            success
+                            header="Wepa!"
+                            content="You have successfully logged in."
+                        /> : ""}
                     <section className="ShowsList">
                         <div className="filters">
                             <Form>
