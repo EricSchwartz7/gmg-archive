@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, NavLink, Switch, FadeIn } from 'react-router-dom';
+import { Route, NavLink, Switch, Redirect } from 'react-router-dom';
 
 import './Parent.scss';
 import ShowsList from './ShowsList/ShowsList';
@@ -87,6 +87,9 @@ class Parent extends Component {
                     </nav>
                 </header>
                 <Switch>
+                    <Route exact path="/">
+                        <Redirect to="/shows" />
+                    </Route>
                     <Route path="/about" component={About} />
                     <Route path="/shows" component={ShowsList} />
                     <Route path="/upload/:id" component={NewShow} />
