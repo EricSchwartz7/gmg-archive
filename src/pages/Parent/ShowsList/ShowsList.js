@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from '../../../axios';
 import { Link } from 'react-router-dom';
-import { Card, Dropdown, Form, Message, Loader, Dimmer } from 'semantic-ui-react';
+import { Card, Dropdown, Form, Message, Loader, Dimmer, Checkbox } from 'semantic-ui-react';
 import _ from 'lodash';
 
 import './ShowsList.scss';
@@ -17,7 +17,8 @@ class ShowsList extends Component {
         filterAndSort: {
             year_filter: "",
             venue_filter: "",
-            sort_order: "most_recent"
+            sort_order: "most_recent",
+            include_all: true
         },
         loading: false
     }
@@ -64,6 +65,10 @@ class ShowsList extends Component {
     
     sort(e, data) {
         this.sortFilterFetch({...this.state.filterAndSort, sort_order: data.value});
+    }
+
+    includeAll(e, data) {
+        this.sortFilterFetch({...this.state.filterAndSort, include_all: !data.checked});
     }
 
     sortFilterFetch(params) {
@@ -150,6 +155,10 @@ class ShowsList extends Component {
                                         options={sortOptions}
                                         onChange={this.sort.bind(this)}/>
                                 </Form.Group>
+                                <Form.Checkbox
+                                        toggle
+                                        label="Hide shows with no media"
+                                        onChange={this.includeAll.bind(this)} />
                             </Form>
                         </div>
                         {this.state.loading ? 
