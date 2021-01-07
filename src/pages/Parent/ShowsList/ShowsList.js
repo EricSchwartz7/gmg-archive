@@ -153,7 +153,7 @@ class ShowsList extends Component {
                             </Form>
                         </div>
                         {this.state.loading ? 
-                            <Loader active>Loading</Loader> :
+                            <Loader active /> :
                             <CSSTransitionGroup
                                 transitionName="fade"
                                 transitionAppear={true}

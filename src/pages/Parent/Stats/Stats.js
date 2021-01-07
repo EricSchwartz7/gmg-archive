@@ -144,7 +144,7 @@ class Stats extends Component {
             let chart = ""
             if (this.state.statSelected) {
                 if (this.state.loading) {
-                    chart = <Loader active>Loading</Loader>;
+                    chart = <Loader active />;
                 } else {
                     chart = 
                         <HighchartsReact

@@ -196,7 +196,7 @@ class Show extends Component {
     render() {
         let show = <div></div>
         if (this.state.loading) {
-            show = <Loader active>Loading</Loader>
+            show = <Loader active />
         } else if (this.state.loadedShow === "notfound") {
             show = (
                 <div>
