@@ -1,18 +1,63 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import { Dropdown, Loader } from 'semantic-ui-react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { CSSTransitionGroup } from 'react-transition-group';
+import _ from 'lodash'
 
 import './Stats.scss';
 
+const statsList = [
+    {
+        text: "Times Played",
+        value: "times_played",
+        path: "all_times_played"
+    },
+    {
+        text: "Percentage of Shows",
+        value: "percentage_played",
+        path: "all_percentage_played"
+    },
+    {
+        text: "First Set Openers",
+        value: "first_set_openers",
+        path: "all_set_openers/1"
+    },
+    {
+        text: "Second Set Openers",
+        value: "second_set_openers",
+        path: "all_set_openers/2"
+    },
+    {
+        text: "First Set Closers",
+        value: "first_set_closers",
+        path: "all_set_closers/1"
+    },
+    {
+        text: "Second Set Closers",
+        value: "second_set_closers",
+        path: "all_set_closers/2"
+    },
+    {
+        text: "Encore Appearances",
+        value: "encore_appearances",
+        path: "all_encore_appearances"
+    },
+]
 class Stats extends Component {
     state = {
-        statSelected: "",
+        statSelected: {},
         currentStatArray: [],
         loading: false
+    }
+
+    componentDidMount() {
+        if (_.isEmpty(this.state.statSelected)) {
+            this.handleSelectStat(null, {
+                options: statsList,
+                value: "times_played"
+            });
+        }
     }
 
     handleSelectStat(e, valueObj) {
@@ -37,50 +82,13 @@ class Stats extends Component {
 
     render() {
 
-        const statsList = [
-            {
-                text: "Times Played",
-                value: "times_played",
-                path: "all_times_played"
-            },
-            {
-                text: "Percentage of Shows",
-                value: "percentage_played",
-                path: "all_percentage_played"
-            },
-            {
-                text: "First Set Openers",
-                value: "first_set_openers",
-                path: "all_set_openers/1"
-            },
-            {
-                text: "Second Set Openers",
-                value: "second_set_openers",
-                path: "all_set_openers/2"
-            },
-            {
-                text: "First Set Closers",
-                value: "first_set_closers",
-                path: "all_set_closers/1"
-            },
-            {
-                text: "Second Set Closers",
-                value: "second_set_closers",
-                path: "all_set_closers/2"
-            },
-            {
-                text: "Encore Appearances",
-                value: "encore_appearances",
-                path: "all_encore_appearances"
-            },
-        ]
-
         const selectStatDropdown = () => {
             return <Dropdown
                 placeholder='Select Stat'
                 selection
                 options={statsList}
                 onChange={this.handleSelectStat.bind(this)}
+                value={this.state.statSelected.value}
             />
         }
 
