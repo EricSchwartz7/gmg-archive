@@ -60,7 +60,7 @@ class Show extends Component {
     }
 
     loadYouTubeVideos() {
-        if ( this.showID ) {
+        if ( this.showID && localStorage.getItem('auth_token')) {
             axios.get("get_videos/" + this.showID)
                 .then( (response) => {
                     this.setState({
@@ -68,6 +68,10 @@ class Show extends Component {
                         loadedYouTubeVideos: true
                     });
                 });
+        } else {
+            this.setState({
+                loadedYouTubeVideos: true
+            })
         }
     }
 
@@ -81,7 +85,7 @@ class Show extends Component {
     }
 
     loadVideos() {
-        if ( this.showID ) {
+        if ( this.showID && localStorage.getItem('auth_token') ) {
             axios.get(`videos_from_show/${this.showID}`)
                 .then(res => {
                     this.setState({videos: res.data});
