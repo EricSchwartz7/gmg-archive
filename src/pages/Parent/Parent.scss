@@ -1,4 +1,16 @@
 .Parent {
+    // @import "node_modules/bootstrap/scss/bootstrap";
+
+    @import "node_modules/bootstrap/scss/functions";
+    @import "node_modules/bootstrap/scss/variables";
+    @import "node_modules/bootstrap/scss/mixins";
+    // @import "node_modules/bootstrap/scss/reboot"; // Bootstrap Normalize (If you don't need normalization, delete it)
+    @import "node_modules/bootstrap/scss/grid"; // You can get rid of it, the layout will get worse on Mobile, but you can fix it
+    @import "node_modules/bootstrap/scss/nav";
+    @import "node_modules/bootstrap/scss/navbar";
+    @import "node_modules/bootstrap/scss/dropdown";
+    @import "node_modules/bootstrap/scss/transitions"; // When click on Mobile Button Menu Toggle, the menu gets collapse/uncollapse 
+
     ul {
         display: inline-block;
         list-style: none;
@@ -24,9 +36,31 @@
         font-size: 1.3em;
     }
 
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        font-size: 1.25em;
+    }
+
+    .navbar-nav {
+        margin: auto;
+    }
+
     a {
-        text-decoration: none;
         color: #003300;
+    }
+
+    .navbar-dark {
+        .navbar-nav .nav-link, .navbar-brand {
+            color: #003300;
+        }
+        .navbar-toggler {
+            color: #003300;
+            border-color: #003300;
+        }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 51, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
+        }
     }
 
     a:hover,

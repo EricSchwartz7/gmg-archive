@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Route, NavLink, Switch, Redirect } from 'react-router-dom';
+import { Route, NavLink, Link, Switch, Redirect } from 'react-router-dom';
+import {Nav,  Navbar, NavDropdown } from 'react-bootstrap';
+import axios from 'axios';
 
 import './Parent.scss';
 import ShowsList from './ShowsList/ShowsList';
@@ -11,7 +13,8 @@ import Song from './Song/Song';
 import Stats from './Stats/Stats';
 import LogIn from './LogIn/LogIn';
 import SignUp from './SignUp/SignUp';
-import axios from 'axios';
+import logoLarge from './gmgtransparentlarge.png';
+
 
 class Parent extends Component {
     state = {
@@ -47,44 +50,31 @@ class Parent extends Component {
     render () {
         return (
             <div className="Parent">
-                <header>
-                    <nav>
-                        <ul className="main">
-                            <li><NavLink
-                                to="/about"
-                                >About</NavLink></li>
-                            <li><NavLink
-                                to="/shows"
-                                >Shows</NavLink></li>
-                            {/* <li><NavLink
-                                to="/bps/"
-                                >Band Practices</NavLink></li>
-                            <li><NavLink
-                                to="/studio/"
-                                >Studio Recordings</NavLink></li> */}
-                            <li><NavLink
-                                to="/stats"
-                                >Stats</NavLink></li>
-                            {this.state.loggedIn ?
-                                <li><NavLink to={{
-                                    pathname: '/upload',
-                                    hash: '#submit'
-                                }}>Add a Show</NavLink></li> : ""}
-                            <li><NavLink
-                                to="/songs"
-                                >Songs</NavLink></li>
-                        </ul>
-                        <ul className="login">
-                            {this.state.loggedIn ?
-                                <li><NavLink
-                                    to="/logout"
-                                    onClick={this.logOut.bind(this)}
-                                    >Log Out</NavLink></li> :
-                                <li><NavLink
-                                    to="/login"
-                                    >Log In</NavLink></li>}
-                        </ul>
-                    </nav>
+                <header className="bootstrap-scope">
+                    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+                        <Navbar.Brand>
+                            <NavLink to="/shows">
+                                <img src={logoLarge} width="30" height="30" alt="" />
+                            </NavLink>
+                        </Navbar.Brand>
+                        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                        <Navbar.Collapse id="responsive-navbar-nav">
+                            <Nav className="ml-auto">
+                                <NavLink to="/about" className="nav-link">About</NavLink>
+                                <NavLink to="/shows" className="nav-link">Shows</NavLink>
+                                <NavLink to="/stats" className="nav-link">Stats</NavLink>
+                                {this.state.loggedIn ?
+                                    <NavLink to={{
+                                        pathname: '/upload',
+                                        hash: '#submit'
+                                    }} className="nav-link">Add a Show</NavLink> : ""}
+                                <NavLink to="/songs" className="nav-link">Songs</NavLink>
+                                {this.state.loggedIn ?
+                                    <NavLink to="/logout" onClick={this.logOut.bind(this)} className="nav-link">Log Out</NavLink> :
+                                    <NavLink to="/login" className="nav-link">Log In</NavLink>}
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Navbar>
                 </header>
                 <Switch>
                     <Route exact path="/">
