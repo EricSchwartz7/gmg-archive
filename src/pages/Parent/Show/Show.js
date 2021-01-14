@@ -208,7 +208,7 @@ class Show extends Component {
                 </div>
             )
         } else if (this.state.loadedShow.venue && this.state.loadedYouTubeVideos && this.state.songsList.length > 0) {
-            let date = new Date(this.state.loadedShow.date + " EST").toLocaleDateString();
+            let date = new Date(this.state.loadedShow.date.replace(/-/g, "/") + " EST").toLocaleDateString();
 
             let firstSetSongs = this.createSongLinks(1);
             let secondSet = this.createSongLinks(2);

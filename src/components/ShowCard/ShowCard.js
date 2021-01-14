@@ -14,7 +14,7 @@ const ShowCard = function(props) {
         <Card color="orange" fluid className="ShowCard">
             <Card.Content>
                 <Card.Header size="small">
-                    <Label ribbon>{props.date}</Label>
+                    <Label ribbon>{props.date.replace(/-/g, "/")}</Label>
                 </Card.Header>
                 <Card.Meta>
                 <span>{props.show.venue}</span>

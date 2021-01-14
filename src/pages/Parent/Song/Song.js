@@ -61,7 +61,7 @@ class Song extends Component {
                         <div className="show-list">
                             {this.state.showAppearances.map((show, i) => {
                                 return <div key={i}>
-                                    <Link className="show" to={"/show/" + show.id}>{show.date} - {show.venue}</Link>
+                                    <Link className="show" to={"/show/" + show.id}>{show.date.replace(/-/g, "/")} - {show.venue}</Link>
                                 </div>
                             })}
                         </div>

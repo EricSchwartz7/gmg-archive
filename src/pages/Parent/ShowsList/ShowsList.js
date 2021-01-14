@@ -94,7 +94,7 @@ class ShowsList extends Component {
         let showCards = <p style={{ textAlign: 'center' }}>Something went wrong!</p>;
         if ( !this.state.error ) {
             showCards = this.state.shows.map( (show, i) => {
-                let date = show.date? new Date(show.date + " EST").toLocaleDateString() : "";
+                let date = show.date? new Date(show.date.replace(/-/g, "/") + " EST").toLocaleDateString() : "";
                 return (
                     <Link className="ui card fluid" to={'/show/' + show.id} key={i}>
                         <ShowCard
