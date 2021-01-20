@@ -67,7 +67,12 @@ class Show extends Component {
                         youTubeVideos: response.data,
                         loadedYouTubeVideos: true
                     });
-                });
+                }).catch(response => {
+                    if (response.request.statusText === "Unauthorized") {
+                        localStorage.removeItem("auth_token");
+                        this.props.history.push("/login");
+                    }
+                })
         } else {
             this.setState({
                 loadedYouTubeVideos: true

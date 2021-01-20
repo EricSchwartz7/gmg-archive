@@ -23,8 +23,14 @@ class Parent extends Component {
 
     componentDidMount () {
         if (localStorage.getItem('auth_token') && !this.state.loggedIn) {
-            this.setState({
-                loggedIn: true
+            axios.get("check_token_expired").then(response => {
+                this.setState({
+                    loggedIn: true
+                });
+            }).catch(response => {
+                if (response.request.status === 401) {
+                    this.logOut();
+                }
             });
         }
     }
