@@ -91,10 +91,39 @@
 
         .youtube-video {
             display: inline-block;
-            height: 350px;
-            width: 500px;
+            // height: 350px;
+            width: 400px;
             margin: 5px;
             padding: 0;
+
         }
+
+        .overlay {
+            position: relative; 
+            background: rgb(0, 0, 0);
+            background: rgba(0, 0, 0, 0.5); /* Black see-through */
+            opacity:0;
+            color: #f1f1f1;
+            transition: .5s ease;
+            color: white;
+        }
+
+        .button {
+            top: 0;
+            right: 0;
+            margin-left: 10px;
+        }
+        
+        .info {
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+        
+        .youtube-video:hover .overlay {
+            opacity: 0.7;
+        }
+
     }
 }

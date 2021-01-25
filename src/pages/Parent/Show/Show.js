@@ -61,7 +61,7 @@ class Show extends Component {
 
     loadYouTubeVideos() {
         if ( this.showID && localStorage.getItem('auth_token')) {
-            axios.get("get_videos/" + this.showID)
+            axios.get("videos/" + this.showID)
                 .then( (response) => {
                     this.setState({
                         youTubeVideos: response.data,
@@ -193,6 +193,15 @@ class Show extends Component {
         }.bind(this));
     }
 
+    deleteYouTubeEmbed(id) {
+        axios.delete(`videos/${id}`).then(response => {
+            let youTubeVideos = this.state.youTubeVideos.filter(youTubeVideo => youTubeVideo.id !== response.data.id);
+            this.setState({
+                youTubeVideos: youTubeVideos
+            });
+        });
+    }
+
     playSong(publicID, title) {
         this.setState({
             musicPlayer: {
@@ -222,9 +231,10 @@ class Show extends Component {
             const YOUTUBE_CONSTANT = "watch?v=";
             const youTubeVideos = this.state.youTubeVideos.map( (video) => {
                 let sliceNumber = video.url.indexOf(YOUTUBE_CONSTANT) + YOUTUBE_CONSTANT.length
-                let id = video.url.slice(sliceNumber);
+                let youTubeID = video.url.slice(sliceNumber);
                 return {
-                    id: id,
+                    youTubeID: youTubeID,
+                    id: video.id,
                     title: video.title
                 }
             });
@@ -304,15 +314,20 @@ class Show extends Component {
                             <div className="youtube-section">
                                 {youTubeVideos.map( (video, i) => 
                                     <div className="youtube-video" key={i}>
-                                        <h3>{video.title}</h3>
+                                        <h3>{video.title}
+                                        {localStorage.getItem('auth_token') ? 
+                                            <Button className="overlay button"
+                                                icon="delete"
+                                                onClick={this.deleteYouTubeEmbed.bind(this, video.id)}
+                                            ></Button> : ""}</h3>
                                         <Embed 
-                                            id={video.id}
+                                            id={video.youTubeID}
                                             placeholder="https://f4.bcbits.com/img/a3887907904_16.jpg"
                                             source="youtube"
                                             iframe={{
                                                 allowFullScreen: true,
                                                 style: {
-                                                padding: 10,
+                                                    padding: 10,
                                                 },
                                             }}>
                                         </Embed>
@@ -322,6 +337,7 @@ class Show extends Component {
                     </div>
                 </CSSTransitionGroup>
             );
+            {/* <div className="overlay info">Added {moment(props.createdAt).format('MM/DD/YY, h:mm a')}</div> */}
         }
         return show;        
     }
