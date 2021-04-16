@@ -1,4 +1,4 @@
-Concert Archive Front End
+Concert Archive (client side)
 ---
 Search through shows, and view or upload photos and videos from each date. View song statistics including set openers, closers, encores, and percentage played.
 
