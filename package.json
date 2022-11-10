@@ -27,7 +27,7 @@
     "yarn": "^1.22.10"
   },
   "devDependencies": {
-    "react-scripts": "4.0.1"
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "react-scripts start --no-cache",
